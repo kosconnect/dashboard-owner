@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History Pesanan | Kosconnect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Signika:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <!-- Ganti dengan gambar -->
+                <img src="img/logokos.png" alt="Kosconnect Logo" style="width: 40px; height: 40px; margin-right: 10px;">
+                <h2>Kosconnect</h2>
+            </div>
+            <ul>
+                <li><a href="index.html"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+                <li>
+                    <h2 style="font-size: 14px; color: #b0bec5;">Manajemen Kos</h2>
+                    <ul style="list-style: none; padding-left: 20px; margin: 10px 0;">
+                        <li>
+                            <a href="manajemen_kos.html">
+                                <i class="fas fa-house-user"></i> <span>Manajemen Kos</span>
+                            </a>
+                            <ul id="manajemenKosDropdown" style="list-style: none; padding-left: 20px; margin-top: 10px;">
+                                <li>
+                                    <a href="manajemen_kamar_kos.html">
+                                        <i class="fas fa-bed"></i> <span>Manajemen Kamar Kos</span>
+                                    </a>
+                                </li>
+                            </ul>                            
+                        </li>                        
+                        <li><a href="feedback.html"><i class="fas fa-comments"></i> <span>Feedback / Review</span></a></li>
+                        <li><a href="pesanan.html"><i class="fas fa-shopping-cart"></i> <span>Pesanan</span></a></li>
+                        <li><a href="history.html"><i class="fas fa-history"></i> <span>History Pesanan</span></a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="dashboard-header">
+                <h1>History Pesanan</h1>
+                <div class="header-icons">
+                    <a href="#"><i class="fas fa-bell"></i></a>
+                    <a href="#"><i class="fas fa-cog"></i></a>
+                    <div class="user-dropdown">
+                        <div class="user-info" onclick="toggleDropdown()">
+                            <div class="top-row">
+                                <span class="name">Balqis Rosa Sekamayang</span>
+                                <i class="fas fa-user"></i>
+                                <i class="fas fa-caret-down"></i>
+                            </div>
+                            <span class="role">Pemilik Kos</span>
+                        </div>
+                        <ul class="dropdown-menu">
+                            <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History Pesanan Cards -->
+            <div class="order-history">
+                <div class="card">
+                    <div class="header">
+                        <div class="order-id">Pesanan ID: 12345</div>
+                        <div class="order-date">15 Januari 2025</div>
+                    </div>
+                    <div class="content">
+                        <p><strong>Nama Pemesan:</strong> John Doe</p>
+                        <p><strong>Kamar Kos:</strong> Kamar 101</p>
+                        <p><strong>Total Pembayaran:</strong> Rp. 1.500.000</p>
+                        <p><strong>Status:</strong> Selesai</p>
+                    </div>
+                    <div class="actions">
+                        <button class="btn btn-primary"><i class="fas fa-eye"></i> Lihat Detail</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="header">
+                        <div class="order-id">Pesanan ID: 12346</div>
+                        <div class="order-date">12 Januari 2025</div>
+                    </div>
+                    <div class="content">
+                        <p><strong>Nama Pemesan:</strong> Sarah Smith</p>
+                        <p><strong>Kamar Kos:</strong> Kamar 102</p>
+                        <p><strong>Total Pembayaran:</strong> Rp. 1.200.000</p>
+                        <p><strong>Status:</strong> Diproses</p>
+                    </div>
+                    <div class="actions">
+                        <button class="btn btn-primary"><i class="fas fa-eye"></i> Lihat Detail</button>
+                    </div>
+                </div>
+
+                <!-- Add more orders here -->
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

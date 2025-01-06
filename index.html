@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Pemilik Kos | Kosconnect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Signika:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <!-- Ganti dengan gambar -->
+                <img src="img/logokos.png" alt="Kosconnect Logo" style="width: 40px; height: 40px; margin-right: 10px;">
+                <h2>Kosconnect</h2>
+            </div>
+            <ul>
+                <li><a href="index.html"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+                <li>
+                    <h2 style="font-size: 14px; color: #b0bec5;">Manajemen Kos</h2>
+                    <ul style="list-style: none; padding-left: 20px; margin: 10px 0;">
+                        <li>
+                            <a href="manajemen_kos.html">
+                                <i class="fas fa-house-user"></i> <span>Manajemen Kos</span>
+                            </a>
+                            <ul id="manajemenKosDropdown" style="list-style: none; padding-left: 20px; margin-top: 10px;">
+                                <li>
+                                    <a href="manajemen_kamar_kos.html">
+                                        <i class="fas fa-bed"></i> <span>Manajemen Kamar Kos</span>
+                                    </a>
+                                </li>
+                            </ul>                            
+                        </li>                        
+                        <li><a href="feedback.html"><i class="fas fa-comments"></i> <span>Feedback / Review</span></a></li>
+                        <li><a href="pesanan.html"><i class="fas fa-shopping-cart"></i> <span>Pesanan</span></a></li>
+                        <li><a href="history.html"><i class="fas fa-history"></i> <span>History Pesanan</span></a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="dashboard-header">
+                <h1>Dashboard Pemilik Kos</h1>
+                <div class="header-icons">
+                    <a href="#"><i class="fas fa-bell"></i></a>
+                    <a href="#"><i class="fas fa-cog"></i></a>
+                    <div class="user-dropdown">
+                        <div class="user-info" onclick="toggleDropdown()">
+                            <div class="top-row">
+                                <span class="name">Balqis Rosa Sekamayang</span>
+                                <i class="fas fa-user"></i>
+                                <i class="fas fa-caret-down"></i>
+                            </div>
+                            <span class="role">Pemilik Kos</span>
+                        </div>
+                        <ul class="dropdown-menu">
+                            <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-widgets">
+                <div class="widget">
+                    <h3><i class="fas fa-house-user"></i> Total Kos</h3>
+                    <p class="widget-info">5</p>
+                </div>
+                <div class="widget">
+                    <h3><i class="fas fa-bed"></i> Total Kamar</h3>
+                    <p class="widget-info">20</p>
+                </div>
+                <div class="widget">
+                    <h3><i class="fas fa-comments"></i> Feedback</h3>
+                    <p class="widget-info">8</p>
+                </div>
+                <div class="widget">
+                    <h3><i class="fas fa-shopping-cart"></i> Pesanan Aktif</h3>
+                    <p class="widget-info">12</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
