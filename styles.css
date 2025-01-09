@@ -1,5 +1,9 @@
+
+*{
+    font-family: 'Poppins', 'sans-serif';
+}
+
 body {
-    font-family: 'Signika', sans-serif;
     margin: 0;
     background: linear-gradient(to bottom right, #e3f2fd, #eceff1);
     color: #333;
@@ -13,7 +17,7 @@ body {
 
 .sidebar {
     width: 180px;
-    background: #002b5b;
+    background: #005f73;
     color: #fff;
     display: flex;
     flex-direction: column;
@@ -34,6 +38,7 @@ body {
 }
 
 .sidebar-header h2 {
+    font-family: 'Merriweather';
     font-weight: 600;
     font-size: 18px;
     margin: 0;
@@ -95,6 +100,7 @@ body {
 }
 
 .dashboard-header h1 {
+    font-family: 'Poppins';
     font-weight: 600;
 }
 
@@ -119,6 +125,10 @@ body {
     margin: 20px;
 }
 
+h1, .widget h3 {
+    font-family: 'Poppins', 'sans-serif';
+    font-weight: 600;
+}
 
 /* Styling untuk tiap widget */
 .widget {
@@ -150,7 +160,7 @@ body {
 
 .widget h3 i {
     font-size: 24px; /* Ukuran ikon */
-    color: #1b3446; /* Warna ikon */
+    color: #005f73; /* Warna ikon */
 }
 
 /* Styling untuk isi widget (angka atau teks) */
@@ -173,7 +183,7 @@ body {
 .user-dropdown {
     position: relative;
     display: inline-block;
-    font-family: 'Signika', sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 .user-info {
@@ -218,6 +228,11 @@ body {
     /* Memberikan jarak antara nama dan role */
 }
 
+/* Dropdown and user roles */
+.user-info .name, .user-info .role {
+    font-family: 'Poppins', 'sans-serif';
+}
+
 /* Dropdown */
 .dropdown-menu {
     display: none;
@@ -225,7 +240,7 @@ body {
     top: 35px;
     /* Jarak dari user info */
     right: 0;
-    background: #002b5b;
+    background: #005f73;
     padding: 5px 15px;
     /* Mengurangi padding agar kotak lebih kecil */
     border-radius: 8px;
@@ -253,7 +268,7 @@ body {
 }
 
 .dropdown-menu li a:hover {
-    background-color: #25a48a;
+    background-color: #20B2AA;
     /* Warna hover */
 }
 
@@ -299,6 +314,7 @@ tbody tr:hover {
 }
 
 .transaction-table h2 {
+    font-family: 'Poppins', sans-serif;
     margin-bottom: 10px;
     text-align: left;
 }
@@ -378,7 +394,7 @@ tbody tr:hover {
 }
 
 .search-bar .btn {
-    background-color: #1b3446;
+    background-color: #005f73;
     color: white;
     padding: 8px 12px;   /* Mengurangi padding tombol */
     border: none;
@@ -403,9 +419,9 @@ tbody tr:hover {
     display: inline-block;
     margin-bottom: 10px; /* Memberikan jarak bawah antara tombol dan elemen lain */
     padding: 6px 12px; /* Memperkecil ukuran tombol */
-    background-color: #1b3446;
+    background-color: #005f73;
     color: white;
-    font-family: 'Signika', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 12px;
     font-weight: 600;
     border: 1px solid #84B8C6;
@@ -416,8 +432,8 @@ tbody tr:hover {
 
 .btn-primary:hover {
     background-color: white;
-    color: #25a48a;
-    border: 1px solid #25a48a;
+    color: #20B2AA;
+    border: 1px solid #20B2AA;
 }
 
 .btn-primary:active {
