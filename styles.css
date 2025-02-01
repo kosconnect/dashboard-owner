@@ -130,6 +130,13 @@ h1, .widget h3 {
     font-weight: 600;
 }
 
+/* Widget Information Text */
+.widget-info {
+    font-family: 'Poppins', 'sans-serif';
+    font-size: 14px;
+    font-weight: 400;
+}
+
 /* Styling untuk tiap widget */
 .widget {
     background-color: #fff;
@@ -488,6 +495,40 @@ tbody tr:hover {
     display: flex;
     justify-content: flex-start;
     gap: 10px; /* Menambahkan jarak antar tombol */
+}
+
+.header {
+    margin-bottom: 20px; /* Jarak antara header dan isi form */
+}
+
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center; /* Untuk menyamakan posisi label dan input */
+}
+
+.form-group label {
+    width: 120px; /* Lebar tetap untuk menyamakan label */
+    font-size: 16px;
+    color: #333;
+}
+
+.form-group input {
+    flex-grow: 1; /* Mengisi ruang sisa */
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.form-group input:focus {
+    border-color: #84B8C6;
+    outline: none;
+    box-shadow: 0 0 5px rgba(132, 184, 198, 0.5);
+}
+
+form .btn-primary {
+    margin-top: 15px;
 }
 
 /* .feedback-card .actions button {
