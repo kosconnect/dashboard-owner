@@ -52,35 +52,37 @@
                 </li>
             </ul>
         </div>
-
+            
         <!-- Main Content -->
         <div class="main-content">
             <div class="dashboard-header">
-                <h1>Kamar Kos</h1>
+                <h1>Kos</h1>
                 <div class="header-icons">
                     <a href="#"><i class="fas fa-bell"></i></a>
                     <a href="#"><i class="fas fa-cog"></i></a>
                     <div class="user-dropdown">
                         <div class="user-info" onclick="toggleDropdown()">
                             <div class="top-row">
-                                <span class="name">Balqis Rosa Sekamayang</span>
+                                <span class="name"></span> <!-- Nama pengguna akan ditambahkan secara dinamis -->
                                 <i class="fas fa-user"></i>
                                 <i class="fas fa-caret-down"></i>
                             </div>
-                            <span class="role">Pemilik Kos</span>
+                            <span class="role">Pemilik Kos</span> <!-- Peran user akan ditambahkan secara dinamis -->
                         </div>
-                        <ul class="dropdown-menu">
-                            <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                        </ul>
                     </div>
+                    <ul class="dropdown-menu">
+                        <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    </ul>
                 </div>
             </div>
+
 
             <!-- Room Management Table -->
             <div class="room-management">
                 <h2>Daftar Kamar Kos</h2>
                 <div style="text-align: right; margin-bottom: 10px;">
-                    <button class="btn btn-primary">Tambah Kamar</button>
+                    <!-- <button class="btn btn-primary">Tambah Kamar</button> -->
+                    <a href="tambah_kamar.html" class="btn btn-primary" style="text-decoration: none;">Tambah Kamar</a>
                 </div>                
                 <table>
                     <thead>
@@ -89,7 +91,6 @@
                             <th>Nama Kamar</th>
                             <th>Fasilitas</th>
                             <th>Harga</th>
-                            <th>Status</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -99,7 +100,6 @@
                             <td>Kamar Eksekutif 1</td>
                             <td>AC, TV, Kamar Mandi Dalam</td>
                             <td>Rp 2.500.000</td>
-                            <td>Aktif</td>
                             <td>
                                 <button class="btn btn-primary"><i class="fas fa-edit"></i> Edit</button>
                                 <button class="btn btn-primary"><i class="fas fa-trash"></i> Hapus</button>
@@ -110,7 +110,6 @@
                             <td>Kamar Mahasiswa 1</td>
                             <td>Tempat Tidur, Lemari, Meja Belajar</td>
                             <td>Rp 1.500.000</td>
-                            <td>Nonaktif</td>
                             <td>
                                 <button class="btn btn-primary"><i class="fas fa-edit"></i> Edit</button>
                                 <button class="btn btn-primary"><i class="fas fa-trash"></i> Hapus</button>

@@ -244,7 +244,7 @@ h1, .widget h3 {
 .dropdown-menu {
     display: none;
     position: absolute;
-    top: 35px;
+    top: 80px;
     /* Jarak dari user info */
     right: 0;
     background: #005f73;
