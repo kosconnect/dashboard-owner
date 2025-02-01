@@ -18,7 +18,8 @@ async function renderBoardingHouseTable(boardingHouses) {
     const container = document.querySelector(".cards-container");
     container.innerHTML = ""; // Menghapus konten sebelumnya
 
-    if (boardingHouses.length === 0) {
+    // Cek apakah boardingHouses berisi data yang valid
+    if (!boardingHouses || boardingHouses.length === 0) {
         container.innerHTML = `
         <div class="card">
             <p>Tidak ada boarding house yang ditemukan.</p>
@@ -83,6 +84,10 @@ window.onload = async () => {
         }
 
         const data = await response.json(); // Dapatkan data dalam bentuk JSON
+        if (!data || !data.data) {
+            throw new Error("Data tidak valid atau tidak ada");
+        }
+
         allBoardingHouseData = data.data; // Ambil array dari 'data'
         await renderBoardingHouseTable(allBoardingHouseData);
     } catch (error) {
