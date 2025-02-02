@@ -109,8 +109,8 @@ document.getElementById("formTambahFasilitasCustom").addEventListener("submit", 
     event.preventDefault();  // Mencegah form dari pengiriman default
 
     // Ambil data dari form
-    const namaFasilitas = document.getElementById("namaFasilitasCustom").value;
-    const hargaFasilitas = document.getElementById("hargaFasilitas").value;
+    const namaFasilitas = document.getElementById("namaFasilitasTambah").value;
+    const hargaFasilitas = document.getElementById("hargaFasilitasTambah").value;
 
     // Ambil token JWT dari cookies
     const jwtToken = getJwtToken();
@@ -148,8 +148,8 @@ document.getElementById("formTambahFasilitasCustom").addEventListener("submit", 
             alert("Fasilitas custom berhasil ditambahkan!");
 
             // Kosongkan form setelah berhasil menambah data
-            document.getElementById("namaFasilitasCustom").value = '';
-            document.getElementById("hargaFasilitas").value = '';
+            document.getElementById("namaFasilitasTambah").value = '';
+            document.getElementById("hargaFasilitasTambah").value = '';
 
             // Tutup popup setelah berhasil
             closePopup();
