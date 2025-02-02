@@ -553,6 +553,31 @@ form .btn-primary {
     margin-top: 15px;
 }
 
+.btn-add, .btn-edit, .btn-delete {
+    width: 150px;
+    display: inline-block;
+    margin-bottom: 10px;
+    /* Memberikan jarak bawah antara tombol dan elemen lain */
+    padding: 6px 12px;
+    /* Memperkecil ukuran tombol */
+    background-color: #005f73;
+    color: white;
+    font-family: 'Poppins', 'sans-serif';
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid #84B8C6;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-add:hover, .btn-edit:hover, .btn-delete:hover {
+    background-color: white;
+    color: #20B2AA;
+    border: 1px solid #20B2AA;
+}
+
+
 /* .feedback-card .actions button {
     background-color: #84B8C6;
     color: white;
