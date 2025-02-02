@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 // Fungsi untuk menangani submit form (PUT request)
-document.getElementById("formTambahKos").addEventListener("submit", async function (e) {
+document.getElementById("formEditKos").addEventListener("submit", async function (e) {
     e.preventDefault();
 
     const categoryKos = document.getElementById("categoryKos").value;
