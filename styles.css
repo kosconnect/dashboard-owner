@@ -714,6 +714,123 @@ textarea {
     border: 1px solid #20B2AA;
 }
 
+/* Pop UP */
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    max-width: 90%;
+    z-index: 1000;
+}
+
+.popup-content {
+    text-align: center;
+}
+
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.popup-title {
+    font-family: 'Merriweather', serif;
+    font-size: 28px;
+    font-weight: bold;
+    margin: 0 auto;
+    color: #003f53;
+}
+
+.popup-subtitle {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #20B2AA;
+}
+
+.form-label {
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+    font-weight: normal;
+    color: #003f53;
+}
+
+.popup input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #005f73;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    /* Pastikan padding tidak menambah ukuran */
+}
+
+.popup input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #005f73;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    /* Pastikan padding tidak menambah ukuran */
+}
+
+.popup .styled-select input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #005f73;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    appearance: none;
+    /* Menghilangkan gaya default dropdown */
+    background: #ffffff url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSI4Ij48cGF0aCBkPSJNMiAxLjVMNiA1LjUgMTEgMS41IiBzdHJva2U9IiMwMDVmNzMiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==') no-repeat right 10px center;
+    background-size: 12px 8px;
+}
+
+.popup-actions {
+    text-align: center;
+}
+
+.btn-simpan {
+    width: 100%;
+    padding: 14px;
+    font-size: 18px;
+    background-color: #005f73;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    gap: 10px;
+}
+
+.btn-simpan:hover {
+    background-color: #003f53;
+}
+
+.cancel-btn {
+    font-size: 24px;
+    color: #005f73;
+    text-decoration: none;
+}
+
+.cancel-btn:hover {
+    color: #003f53;
+    cursor: pointer;
+}
 
 /* .feedback-card .actions button {
     background-color: #84B8C6;
