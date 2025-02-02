@@ -52,7 +52,7 @@ async function renderBoardingHouseTable(boardingHouses) {
                 <p>Aturan: ${rules}</p>
 
                 <h3>Aksi</h3>
-                <button class="btn btn-lihat" onclick="redirectToRoomManagement('${boarding_house_id}')"><i class="fas fa-eye"></i>Lihat Kamar Kos</button>
+                <button class="btn btn-lihat" onclick="redirectToRoomManagement('${boarding_house_id}')">Lihat Kamar Kos</button>
                 <button class="btn btn-edit" onclick="location.href='edit_kos.html?boarding_house_id=${boarding_house_id}'">Edit</button>
                 <button class="btn btn-delete" onclick="deleteBoardingHouse('${boarding_house_id}')">Hapus</button>
             </div>

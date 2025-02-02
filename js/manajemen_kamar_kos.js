@@ -10,6 +10,12 @@ function getCookie(name) {
     return null;
 }
 
+// Fungsi untuk mendapatkan parameter query dari URL
+function getQueryParameter(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+}
+
 // Variabel global untuk menyimpan semua data kamar kos
 let allRoomData = [];
 
@@ -98,8 +104,17 @@ async function renderRoomTable(rooms) {
 window.onload = async () => {
     try {
         const authToken = getCookie("authToken");
+
+        // Ambil boardingHouseID dari URL (gunakan URLSearchParams)
+        const boardingHouseID = getQueryParameter("boarding_house_id"); // Ambil dari URL
+
+        // Pastikan boardingHouseID ada
+        if (!boardingHouseID) {
+            throw new Error("Boarding House ID tidak ditemukan");
+        }
+
         const response = await fetch(
-            "https://kosconnect-server.vercel.app/api/rooms/boarding-house/boarding_house_id",
+            `https://kosconnect-server.vercel.app/api/rooms/boarding-house/${boardingHouseID}`,
             {
                 method: "GET",
                 headers: {
