@@ -92,16 +92,19 @@ async function fetchBoardingHouseById() {
 
         const data = await response.json();
 
-        document.getElementById("categoryKos").value = data.category_id || '';
-        document.getElementById("namaKos").value = data.name || '';
-        document.getElementById("alamatKos").value = data.address || '';
-        document.getElementById("descriptionKos").value = data.description || '';
-        document.getElementById("rulesKos").value = data.rules || '';
+        console.log("Data Kos:", data); // Tambahkan log untuk melihat data
 
-        // Menambahkan gambar yang sudah ada
+        // Mengisi form dengan data yang diambil
+        document.getElementById("categoryKos").value = data.boardingHouse.category_id || '';
+        document.getElementById("namaKos").value = data.boardingHouse.name || '';
+        document.getElementById("alamatKos").value = data.boardingHouse.address || '';
+        document.getElementById("descriptionKos").value = data.boardingHouse.description || '';
+        document.getElementById("rulesKos").value = data.boardingHouse.rules || '';
+
+        // Menambahkan gambar yang sudah ada, jika ada
         const imageContainer = document.querySelector(".image-inputs");
-        if (Array.isArray(data.images) && data.images.length > 0) {
-            data.images.forEach((image, index) => {
+        if (Array.isArray(data.boardingHouse.images) && data.boardingHouse.images.length > 0) {
+            data.boardingHouse.images.forEach((image, index) => {
                 const imageElement = document.createElement("img");
                 imageElement.src = image;
                 imageElement.alt = `Gambar ${index + 1}`;
@@ -110,9 +113,9 @@ async function fetchBoardingHouseById() {
             });
         }
 
-        // Centang fasilitas yang sesuai
-        if (Array.isArray(data.facilities_id) && data.facilities_id.length > 0) {
-            const selectedFacilities = new Set(data.facilities_id);
+        // Menambahkan fasilitas yang sesuai, jika ada
+        if (Array.isArray(data.boardingHouse.facilities_id) && data.boardingHouse.facilities_id.length > 0) {
+            const selectedFacilities = new Set(data.boardingHouse.facilities_id);
             document.querySelectorAll("input[name='fasilitasKos[]']").forEach(input => {
                 if (selectedFacilities.has(input.value)) {
                     input.checked = true;
