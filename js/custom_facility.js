@@ -75,7 +75,7 @@ function fetchCustomFacilities() {
                 // Kolom Aksi
                 const tdAksi = document.createElement('td');
                 tdAksi.innerHTML = `
-                    <button class="btn btn-primary" onclick="openEditPopup('custom_facility_id')"><i class="fas fa-edit"></i> Edit</button>
+                    <button class="btn btn-primary edit-btn" data-id="${custom_facility_id}"><i class="fas fa-edit"></i> Edit</button>
                     <button class="btn btn-primary" onclick="deleteCustomFacility('custom_facility_id')"><i class="fas fa-trash"></i> Hapus</button>
                 `;
                 tr.appendChild(tdAksi);
@@ -165,6 +165,13 @@ document.getElementById("formTambahFasilitasCustom").addEventListener("submit", 
         });
 });
 
+
+document.addEventListener("click", function (event) {
+    if (event.target.closest(".edit-btn")) {
+        const custom_facility_id = event.target.closest(".edit-btn").dataset.id;
+        openEditPopup(custom_facility_id);
+    }
+});
 
 // PUT Custom Facility
 // Fungsi untuk membuka popup dengan data fasilitas yang akan diedit
