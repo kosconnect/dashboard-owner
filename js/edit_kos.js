@@ -92,29 +92,33 @@ async function fetchBoardingHouseById() {
 
         const data = await response.json();
 
-        document.getElementById("categoryKos").value = data.category_id;
-        document.getElementById("namaKos").value = data.name;
-        document.getElementById("alamatKos").value = data.address;
-        document.getElementById("descriptionKos").value = data.description;
-        document.getElementById("rulesKos").value = data.rules;
+        document.getElementById("categoryKos").value = data.category_id || '';
+        document.getElementById("namaKos").value = data.name || '';
+        document.getElementById("alamatKos").value = data.address || '';
+        document.getElementById("descriptionKos").value = data.description || '';
+        document.getElementById("rulesKos").value = data.rules || '';
 
         // Menambahkan gambar yang sudah ada
         const imageContainer = document.querySelector(".image-inputs");
-        data.images.forEach((image, index) => {
-            const imageElement = document.createElement("img");
-            imageElement.src = image;
-            imageElement.alt = `Gambar ${index + 1}`;
-            imageElement.style.width = "100px"; // Gaya gambar jika perlu
-            imageContainer.appendChild(imageElement);
-        });
+        if (Array.isArray(data.images) && data.images.length > 0) {
+            data.images.forEach((image, index) => {
+                const imageElement = document.createElement("img");
+                imageElement.src = image;
+                imageElement.alt = `Gambar ${index + 1}`;
+                imageElement.style.width = "100px"; // Gaya gambar jika perlu
+                imageContainer.appendChild(imageElement);
+            });
+        }
 
         // Centang fasilitas yang sesuai
-        const selectedFacilities = new Set(data.facilities_id);
-        document.querySelectorAll("input[name='fasilitasKos[]']").forEach(input => {
-            if (selectedFacilities.has(input.value)) {
-                input.checked = true;
-            }
-        });
+        if (Array.isArray(data.facilities_id) && data.facilities_id.length > 0) {
+            const selectedFacilities = new Set(data.facilities_id);
+            document.querySelectorAll("input[name='fasilitasKos[]']").forEach(input => {
+                if (selectedFacilities.has(input.value)) {
+                    input.checked = true;
+                }
+            });
+        }
 
     } catch (error) {
         console.error("Error:", error);
