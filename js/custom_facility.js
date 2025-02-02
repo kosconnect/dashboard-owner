@@ -32,7 +32,7 @@ function fetchCustomFacilities() {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             return response.json();
-        })        
+        })
         .then(data => {
             console.log("Data fasilitas khusus:", data);
 
@@ -92,12 +92,12 @@ function fetchCustomFacilities() {
 // Panggil fungsi fetch ketika halaman dimuat
 document.addEventListener('DOMContentLoaded', fetchCustomFacilities);
 
-document.addEventListener("DOMContentLoaded", function() {
-    window.openPopup = function() {
+document.addEventListener("DOMContentLoaded", function () {
+    window.openPopup = function () {
         document.getElementById("popupTambahFasilitasCustom").style.display = "block";
     }
 
-    window.closePopup = function() {
+    window.closePopup = function () {
         document.getElementById("popupTambahFasilitasCustom").style.display = "none";
     }
 });
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 // POST Custom Facility
 // Fungsi untuk menangani pengiriman form
-document.getElementById("formTambahFasilitasCustom").addEventListener("submit", function(event) {
+document.getElementById("formTambahFasilitasCustom").addEventListener("submit", function (event) {
     event.preventDefault();  // Mencegah form dari pengiriman default
 
     // Ambil data dari form
@@ -134,19 +134,33 @@ document.getElementById("formTambahFasilitasCustom").addEventListener("submit", 
         },
         body: JSON.stringify(data)  // Mengirim data dalam format JSON
     })
-    .then(response => {
-        console.log(response);  // Untuk debug response dari server
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();  // Mengambil response dalam format JSON
-    })
-    .then(data => {
-        console.log("Fasilitas custom berhasil ditambahkan:", data);
-        closePopup();  // Tutup popup setelah berhasil
-        fetchCustomFacilities();  // Refresh data fasilitas custom
-    })
-    .catch(error => {
-        console.error("Gagal menambah fasilitas custom:", error);
-    });
+        .then(response => {
+            console.log(response);  // Untuk debug response dari server
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();  // Mengambil response dalam format JSON
+        })
+        .then(data => {
+            console.log("Fasilitas custom berhasil ditambahkan:", data);
+
+            // Menampilkan alert sukses
+            alert("Fasilitas custom berhasil ditambahkan!");
+
+            // Kosongkan form setelah berhasil menambah data
+            document.getElementById("namaFasilitasCustom").value = '';
+            document.getElementById("hargaFasilitas").value = '';
+
+            // Tutup popup setelah berhasil
+            closePopup();
+
+            // Refresh data fasilitas custom
+            fetchCustomFacilities();
+        })
+        .catch(error => {
+            console.error("Gagal menambah fasilitas custom:", error);
+
+            // Menampilkan alert gagal
+            alert("Gagal menambah fasilitas custom. Coba lagi.");
+        });
 });
