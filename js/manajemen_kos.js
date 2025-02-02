@@ -66,6 +66,19 @@ function redirectToRoomManagement(boardingHouseId) {
     window.location.href = url;
 }
 
+function redirectToRoomManagement(boarding_house_id) {
+    if (!boarding_house_id) {
+        const userResponse = confirm("Kos ini belum memiliki kamar. Tambah kamar kos sekarang?");
+        if (userResponse) {
+            window.location.href = "manajemen_kamar_kos.html"; // Redirect ke halaman tambah kamar
+        } else {
+            window.location.href = "manajemen_kos.html"; // Tetap di halaman manajemen kos
+        }
+    } else {
+        window.location.href = `manajemen_kamar_kos.html?boarding_house_id=${boarding_house_id}`; // Redirect ke daftar kamar
+    }
+}
+
 // function tambahKamarKos(boardingHouseId) {
 //     window.location.href = `tambah_kamar_kos.html?boarding_house_id=${boardingHouseId}`;
 // }
