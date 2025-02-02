@@ -94,3 +94,30 @@ window.onload = async () => {
         console.error("Gagal mengambil data:", error);
     }
 };
+
+async function deleteBoardingHouse(boardingHouseId) {
+    const confirmDelete = confirm("Apakah Anda yakin ingin menghapus kos ini?");
+
+    if (!confirmDelete) return; // Jika user membatalkan, tidak lanjutkan
+
+    try {
+        const authToken = getCookie("authToken");
+        const response = await fetch(`https://kosconnect-server.vercel.app/api/boardingHouses/${boardingHouseId}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${authToken}` // Pastikan token sudah disertakan
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error("Gagal menghapus kos");
+        }
+
+        alert("Kos berhasil dihapus!");
+        window.location.href = 'manajemen_kos.html'; // Kembali ke halaman manajemen kos
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Terjadi kesalahan saat menghapus kos.");
+    }
+}
