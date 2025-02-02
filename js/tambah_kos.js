@@ -148,7 +148,7 @@ document.getElementById("formTambahKos").addEventListener("submit", async functi
     console.log("Data yang dikirim:", Object.fromEntries(formData.entries()));
     
     try {
-        const response = await fetch("https://kosconnect-server.vercel.app/api/boardingHouses/owner", {
+        const response = await fetch("https://kosconnect-server.vercel.app/api/boardingHouses/", {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${token}` // Jika API memerlukan autentikasi
