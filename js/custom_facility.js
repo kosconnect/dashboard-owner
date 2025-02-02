@@ -165,6 +165,11 @@ document.getElementById("formTambahFasilitasCustom").addEventListener("submit", 
         });
 });
 
+function closePopup() {
+    document.getElementById("popupTambahFasilitasCustom").style.display = "none";
+    document.getElementById("formTambahFasilitasCustom").reset();
+}
+
 
 // Handle Edit Button Click
 document.addEventListener("click", function (event) {
@@ -196,30 +201,22 @@ function openEditPopup(custom_facility_id) {
             return response.json();
         })
         .then(data => {
-            // Periksa apakah data yang diterima valid
-            console.log("Data fasilitas yang diterima:", data);
-    
-            // Setel data di form
-            document.getElementById("namaFasilitasCustom").value = data.name;
-            document.getElementById("hargaFasilitas").value = data.price;
-    
-            // Tampilkan popup edit
+            document.getElementById("namaFasilitasEdit").value = data.name;
+            document.getElementById("hargaFasilitasEdit").value = data.price;
             document.getElementById("popupEditFasilitasCustom").style.display = "block";
-    
-            // Set data ID di form untuk keperluan update nanti
             document.getElementById("formEditFasilitasCustom").setAttribute('data-id', custom_facility_id);
         })
         .catch(error => {
             console.error("Gagal mengambil data fasilitas:", error);
             alert("Gagal mengambil data fasilitas. Coba lagi.");
         });
-    }
+}
 
 document.getElementById("formEditFasilitasCustom").addEventListener("submit", function (event) {
     event.preventDefault();
 
-    const namaFasilitas = document.getElementById("namaFasilitasCustom").value;
-    const hargaFasilitas = document.getElementById("hargaFasilitas").value;
+    const namaFasilitas = document.getElementById("namaFasilitasEdit").value;
+    const hargaFasilitas = document.getElementById("hargaFasilitasEdit").value;
 
     const jwtToken = getJwtToken();
     if (!jwtToken) {
@@ -228,11 +225,6 @@ document.getElementById("formEditFasilitasCustom").addEventListener("submit", fu
     }
 
     const custom_facility_id = document.getElementById("formEditFasilitasCustom").getAttribute('data-id');
-    if (!custom_facility_id) {
-        console.error("ID fasilitas tidak ditemukan.");
-        return;
-    }
-
     const data = {
         name: namaFasilitas,
         price: parseFloat(hargaFasilitas)
@@ -253,10 +245,7 @@ document.getElementById("formEditFasilitasCustom").addEventListener("submit", fu
             return response.json();
         })
         .then(data => {
-            console.log("Fasilitas custom berhasil diperbarui:", data);
             alert("Fasilitas custom berhasil diperbarui!");
-            document.getElementById("namaFasilitasCustom").value = '';
-            document.getElementById("hargaFasilitas").value = '';
             closeEditPopup();
             fetchCustomFacilities();
         })
@@ -268,6 +257,7 @@ document.getElementById("formEditFasilitasCustom").addEventListener("submit", fu
 
 function closeEditPopup() {
     document.getElementById("popupEditFasilitasCustom").style.display = "none";
+    document.getElementById("formEditFasilitasCustom").reset();
 }
 
 
