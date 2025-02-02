@@ -76,7 +76,7 @@ function fetchCustomFacilities() {
                 const tdAksi = document.createElement('td');
                 tdAksi.innerHTML = `
                     <button class="btn btn-primary" onclick="openEditPopup('custom_facility_id')"><i class="fas fa-edit"></i> Edit</button>
-                    <button class="btn btn-primary"><i class="fas fa-trash"></i> Hapus</button>
+                    <button class="btn btn-primary" onclick="deleteCustomFacility('custom_facility_id')"><i class="fas fa-trash"></i> Hapus</button>
                 `;
                 tr.appendChild(tdAksi);
 
@@ -274,4 +274,50 @@ document.getElementById("formEditFasilitasCustom").addEventListener("submit", fu
 // Fungsi untuk menutup popup edit
 function closeEditPopup() {
     document.getElementById("popupEditFasilitasCustom").style.display = "none";
+}
+
+
+// DELETE Custom Facility
+function deleteCustomFacility(custom_facility_id) {
+    const jwtToken = getJwtToken();
+    if (!jwtToken) {
+        console.error("Tidak ada token JWT, tidak dapat melanjutkan permintaan.");
+        return;
+    }
+
+    // Tanyakan konfirmasi sebelum menghapus
+    const confirmation = confirm("Apakah Anda yakin ingin menghapus fasilitas ini?");
+    if (!confirmation) {
+        return;  // Hentikan jika pengguna tidak mengonfirmasi
+    }
+
+    // Kirim permintaan DELETE ke API
+    fetch(`https://kosconnect-server.vercel.app/api/customFacilities/${custom_facility_id}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${jwtToken}`,
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log("Fasilitas custom berhasil dihapus:", data);
+
+        // Menampilkan alert sukses
+        alert("Fasilitas custom berhasil dihapus!");
+
+        // Refresh data fasilitas custom setelah dihapus
+        fetchCustomFacilities();
+    })
+    .catch(error => {
+        console.error("Gagal menghapus fasilitas custom:", error);
+
+        // Menampilkan alert gagal
+        alert("Gagal menghapus fasilitas custom. Coba lagi.");
+    });
 }
