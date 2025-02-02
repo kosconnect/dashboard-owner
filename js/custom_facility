@@ -68,9 +68,9 @@ function fetchCustomFacilities() {
                 tr.appendChild(tdHarga);
 
                 // Kolom Owner ID
-                const tdOwnerId = document.createElement('td');
-                tdOwnerId.textContent = fasilitas.owner_id;  // Pastikan 'owner_id' sesuai dengan struktur data API
-                tr.appendChild(tdOwnerId);
+                // const tdOwnerId = document.createElement('td');
+                // tdOwnerId.textContent = fasilitas.owner_id;  // Pastikan 'owner_id' sesuai dengan struktur data API
+                // tr.appendChild(tdOwnerId);
 
                 // Kolom Aksi
                 const tdAksi = document.createElement('td');
