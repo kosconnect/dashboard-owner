@@ -195,7 +195,9 @@ document.getElementById("formEditRoom").addEventListener("submit", async functio
     formData.append("price_quarterly", hargaInputs[1] || "0");
     formData.append("price_semi_annual", hargaInputs[2] || "0");
     formData.append("price_yearly", hargaInputs[3] || "0");
-    formData.append("number_available", kamarTersedia);
+    formData.append("number_available", validKamarTersedia);
+    // Ensure that kamarTersedia is a valid number or set to a default value (e.g., 0)
+    const validKamarTersedia = (isNaN(kamarTersedia) || kamarTersedia === "") ? 0 : kamarTersedia;
     formData.append("room_facilities", JSON.stringify(roomFacilities));
     formData.append("custom_facilities", JSON.stringify(fasilitasTambahan));
 
