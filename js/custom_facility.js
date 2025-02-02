@@ -101,3 +101,52 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("popupTambahFasilitasCustom").style.display = "none";
     }
 });
+
+
+// POST Custom Facility
+// Fungsi untuk menangani pengiriman form
+document.getElementById("formTambahFasilitasCustom").addEventListener("submit", function(event) {
+    event.preventDefault();  // Mencegah form dari pengiriman default
+
+    // Ambil data dari form
+    const namaFasilitas = document.getElementById("namaFasilitasCustom").value;
+    const hargaFasilitas = document.getElementById("hargaFasilitas").value;
+
+    // Ambil token JWT dari cookies
+    const jwtToken = getJwtToken();
+    if (!jwtToken) {
+        console.error("Tidak ada token JWT, tidak dapat melanjutkan permintaan.");
+        return;
+    }
+
+    // Membuat data yang akan dikirim
+    const data = {
+        name: namaFasilitas,
+        price: parseFloat(hargaFasilitas)  // Pastikan harga dalam bentuk angka
+    };
+
+    // Kirim data menggunakan fetch (POST)
+    fetch('https://kosconnect-server.vercel.app/api/customFacilities/', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${jwtToken}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)  // Mengirim data dalam format JSON
+    })
+    .then(response => {
+        console.log(response);  // Untuk debug response dari server
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();  // Mengambil response dalam format JSON
+    })
+    .then(data => {
+        console.log("Fasilitas custom berhasil ditambahkan:", data);
+        closePopup();  // Tutup popup setelah berhasil
+        fetchCustomFacilities();  // Refresh data fasilitas custom
+    })
+    .catch(error => {
+        console.error("Gagal menambah fasilitas custom:", error);
+    });
+});
