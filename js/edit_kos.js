@@ -14,7 +14,7 @@ function getJwtToken() {
 // Ambil token dari cookie
 const token = getJwtToken();
 const urlParams = new URLSearchParams(window.location.search);
-const boardingHouseId = urlParams.get("id"); // Sesuai dengan boarding_house_id dari URL
+const boardingHouseId = urlParams.get("boarding_house_id"); // Sesuai dengan boarding_house_id dari URL
 
 // Fungsi untuk fetch data dan isi dropdown atau checkbox
 async function fetchData(url, containerElement, keyId, keyName, isCheckbox = false) {
