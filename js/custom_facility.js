@@ -196,16 +196,24 @@ function openEditPopup(custom_facility_id) {
             return response.json();
         })
         .then(data => {
+            // Periksa apakah data yang diterima valid
+            console.log("Data fasilitas yang diterima:", data);
+    
+            // Setel data di form
             document.getElementById("namaFasilitasCustom").value = data.name;
             document.getElementById("hargaFasilitas").value = data.price;
+    
+            // Tampilkan popup edit
             document.getElementById("popupEditFasilitasCustom").style.display = "block";
+    
+            // Set data ID di form untuk keperluan update nanti
             document.getElementById("formEditFasilitasCustom").setAttribute('data-id', custom_facility_id);
         })
         .catch(error => {
             console.error("Gagal mengambil data fasilitas:", error);
             alert("Gagal mengambil data fasilitas. Coba lagi.");
         });
-}
+    }
 
 document.getElementById("formEditFasilitasCustom").addEventListener("submit", function (event) {
     event.preventDefault();
