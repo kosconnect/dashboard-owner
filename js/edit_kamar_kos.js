@@ -70,17 +70,13 @@ async function fetchData(url, containerElement, keyId, keyName, isCheckbox = fal
 }
 
 // Fungsi untuk mengambil fasilitas tambahan (custom facility)
-async function fetchCustomFacilities() {
+async function fetchCustomFacilities(selectedFacilities = []) {
     if (!token) {
         console.error("Tidak ada token JWT, tidak dapat melanjutkan permintaan.");
         return;
     }
 
-    const customFacilitiesContainer = document.getElementById("fasilitasTambahan");
-    if (!customFacilitiesContainer) {
-        console.error("Element #fasilitasTambahan tidak ditemukan!");
-        return;
-    }
+    const fasilitasTambahanContainer = document.getElementById("fasilitasTambahan");
 
     try {
         const response = await fetch("https://kosconnect-server.vercel.app/api/customFacilities/owner", {
@@ -91,7 +87,7 @@ async function fetchCustomFacilities() {
             }
         });
 
-        if (!response.ok) throw new Error("Gagal mengambil data custom facility");
+        if (!response.ok) throw new Error("Gagal mengambil fasilitas tambahan");
 
         const data = await response.json();
         const listData = data.data || data;
@@ -100,7 +96,7 @@ async function fetchCustomFacilities() {
             throw new Error("Format data tidak sesuai");
         }
 
-        customFacilitiesContainer.innerHTML = "";
+        fasilitasTambahanContainer.innerHTML = "";
 
         listData.forEach(item => {
             const checkboxWrapper = document.createElement("div");
@@ -108,7 +104,12 @@ async function fetchCustomFacilities() {
             checkboxInput.type = "checkbox";
             checkboxInput.name = "fasilitasTambahan[]";
             checkboxInput.value = item.facility_id;
-            checkboxInput.id = `custom_facility_${item.facility_id}`;
+            checkboxInput.id = `fasilitasTambahan_${item.facility_id}`;
+
+            // Jika fasilitas sudah dipilih, centang checkbox
+            if (selectedFacilities.includes(item.facility_id)) {
+                checkboxInput.checked = true;
+            }
 
             const checkboxLabel = document.createElement("label");
             checkboxLabel.setAttribute("for", checkboxInput.id);
@@ -116,8 +117,11 @@ async function fetchCustomFacilities() {
 
             checkboxWrapper.appendChild(checkboxInput);
             checkboxWrapper.appendChild(checkboxLabel);
-            customFacilitiesContainer.appendChild(checkboxWrapper);
+            fasilitasTambahanContainer.appendChild(checkboxWrapper);
         });
+
+        console.log("Fasilitas tambahan berhasil dimuat.");
+
     } catch (error) {
         console.error("Error:", error);
     }
@@ -125,8 +129,11 @@ async function fetchCustomFacilities() {
 
 
 async function fetchRoomById() {
-    if (!roomId) {
-        console.error("ID kamar tidak ditemukan.");
+    const boardingHouseId = getBoardingHouseIdFromURL();
+    const roomId = getRoomIdFromURL(); // Pastikan ada fungsi ini untuk mengambil `room_id`
+
+    if (!boardingHouseId || !roomId) {
+        console.error("Boarding House ID atau Room ID tidak ditemukan.");
         return;
     }
 
@@ -143,36 +150,30 @@ async function fetchRoomById() {
 
         const data = await response.json();
 
-        document.getElementById("size").value = data.data.size || '';
-        document.getElementById("priceMonthly").value = data.data.price?.monthly || '';
-        document.getElementById("priceQuarterly").value = data.data.price?.quarterly || '';
-        document.getElementById("priceSemiAnnual").value = data.data.price?.semi_annual || '';
-        document.getElementById("priceYearly").value = data.data.price?.yearly || '';
-        document.getElementById("numberAvailable").value = data.data.number_available || '';
+        // Isi form dengan data kamar
+        document.getElementById("tipeKamar").value = data.room_type;
+        document.getElementById("ukuranKamar").value = data.size;
+        document.getElementById("kamarTersedia").value = data.number_available;
 
-        // Set fasilitas kamar yang sudah dipilih sebelumnya
-        if (Array.isArray(data.data.room_facilities) && data.data.room_facilities.length > 0) {
-            const selectedFacilities = new Set(data.data.room_facilities);
-            document.querySelectorAll("input[name='roomFacilities[]']").forEach(input => {
-                if (selectedFacilities.has(input.value)) {
-                    input.checked = true;
-                }
-            });
-        }
+        // Menandai harga kamar
+        const hargaInputs = document.querySelectorAll(".hargaKamar");
+        hargaInputs[0].value = data.price_monthly || "";
+        hargaInputs[1].value = data.price_quarterly || "";
+        hargaInputs[2].value = data.price_semi_annual || "";
+        hargaInputs[3].value = data.price_yearly || "";
 
-        // Set fasilitas tambahan yang sudah dipilih sebelumnya
-        if (Array.isArray(data.data.custom_facilities) && data.data.custom_facilities.length > 0) {
-            const selectedCustomFacilities = new Set(data.data.custom_facilities);
-            document.querySelectorAll("input[name='fasilitasTambahan[]']").forEach(input => {
-                if (selectedCustomFacilities.has(input.value)) {
-                    input.checked = true;
-                }
-            });
-        }
+        // Ambil fasilitas tambahan yang sudah dipilih
+        const selectedCustomFacilities = data.custom_facilities || [];
+        console.log("Fasilitas tambahan yang sudah dipilih:", selectedCustomFacilities);
+
+        // Panggil fetchCustomFacilities dengan fasilitas yang sudah dipilih
+        await fetchCustomFacilities(selectedCustomFacilities);
+
     } catch (error) {
         console.error("Error:", error);
     }
 }
+
 document.addEventListener("DOMContentLoaded", async () => {
     const facilitiesContainer = document.getElementById("fasilitasKamar");
     if (!facilitiesContainer) {
