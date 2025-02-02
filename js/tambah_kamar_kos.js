@@ -165,7 +165,7 @@ document.getElementById("formTambahKamar").addEventListener("submit", async func
         if (!response.ok) throw new Error("Gagal menyimpan data");
 
         alert("Kamar berhasil ditambahkan!");
-        window.location.href = "manajemen_kamar_kos.html";
+        window.location.href = `manajemen_kamar_kos.html?boarding_house_id=${boardingHouseId}`;
     } catch (error) {
         console.error("Error:", error);
         alert("Terjadi kesalahan saat menambahkan kamar.");
