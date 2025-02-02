@@ -136,13 +136,13 @@
                 </a>
             </div>
             <h3 class="popup-subtitle">Edit Fasilitas Custom</h3>
-            <form id="formEditFasilitasCustom" method="POST">
+            <form id="formEditFasilitasCustom" method="POST" onsubmit="handleEditFasilitasCustom(event)">
                 <label for="namaFasilitasCustom" class="form-label">Masukkan nama fasilitas!</label>
                 <input type="text" id="namaFasilitasCustom" name="name" placeholder="Nama Fasilitas" required>
-
+    
                 <label for="hargaFasilitas" class="form-label">Masukkan harga fasilitas!</label>
                 <input type="number" id="hargaFasilitas" name="price" placeholder="Harga Fasilitas" required min="0">
-
+    
                 <div class="popup-actions">
                     <button type="submit" class="btn btn-simpan">Simpan</button>
                 </div>

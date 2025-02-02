@@ -75,8 +75,8 @@ function fetchCustomFacilities() {
                 // Kolom Aksi
                 const tdAksi = document.createElement('td');
                 tdAksi.innerHTML = `
-                    <button class="btn btn-primary edit-btn" data-id="${custom_facility_id}"><i class="fas fa-edit"></i> Edit</button>
-                    <button class="btn btn-primary" onclick="deleteCustomFacility('custom_facility_id')"><i class="fas fa-trash"></i> Hapus</button>
+                    <button class="btn btn-primary edit-btn" data-id="${fasilitas.custom_facility_id}"><i class="fas fa-edit"></i> Edit</button>
+                    <button class="btn btn-primary" onclick="deleteCustomFacility('${fasilitas.custom_facility_id}')"><i class="fas fa-trash"></i> Hapus</button>
                 `;
                 tr.appendChild(tdAksi);
 
@@ -166,6 +166,7 @@ document.getElementById("formTambahFasilitasCustom").addEventListener("submit", 
 });
 
 
+// Handle Edit Button Click
 document.addEventListener("click", function (event) {
     if (event.target.closest(".edit-btn")) {
         const custom_facility_id = event.target.closest(".edit-btn").dataset.id;
@@ -174,7 +175,6 @@ document.addEventListener("click", function (event) {
 });
 
 // PUT Custom Facility
-// Fungsi untuk membuka popup dengan data fasilitas yang akan diedit
 function openEditPopup(custom_facility_id) {
     const jwtToken = getJwtToken();
     if (!jwtToken) {
@@ -196,14 +196,9 @@ function openEditPopup(custom_facility_id) {
             return response.json();
         })
         .then(data => {
-            // Isi form dengan data fasilitas yang akan diedit
             document.getElementById("namaFasilitasCustom").value = data.name;
             document.getElementById("hargaFasilitas").value = data.price;
-
-            // Tampilkan popup
             document.getElementById("popupEditFasilitasCustom").style.display = "block";
-
-            // Simpan ID fasilitas untuk PUT
             document.getElementById("formEditFasilitasCustom").setAttribute('data-id', custom_facility_id);
         })
         .catch(error => {
@@ -212,9 +207,8 @@ function openEditPopup(custom_facility_id) {
         });
 }
 
-// Fungsi untuk menangani pengiriman form untuk PUT
 document.getElementById("formEditFasilitasCustom").addEventListener("submit", function (event) {
-    event.preventDefault();  // Mencegah form dari pengiriman default
+    event.preventDefault();
 
     const namaFasilitas = document.getElementById("namaFasilitasCustom").value;
     const hargaFasilitas = document.getElementById("hargaFasilitas").value;
@@ -225,20 +219,17 @@ document.getElementById("formEditFasilitasCustom").addEventListener("submit", fu
         return;
     }
 
-    // Ambil ID dari atribut data-id form
     const custom_facility_id = document.getElementById("formEditFasilitasCustom").getAttribute('data-id');
     if (!custom_facility_id) {
         console.error("ID fasilitas tidak ditemukan.");
         return;
     }
 
-    // Membuat data yang akan dikirim
     const data = {
         name: namaFasilitas,
         price: parseFloat(hargaFasilitas)
     };
 
-    // Kirim data menggunakan fetch (PUT)
     fetch(`https://kosconnect-server.vercel.app/api/customFacilities/${custom_facility_id}`, {
         method: 'PUT',
         headers: {
@@ -259,7 +250,7 @@ document.getElementById("formEditFasilitasCustom").addEventListener("submit", fu
             document.getElementById("namaFasilitasCustom").value = '';
             document.getElementById("hargaFasilitas").value = '';
             closeEditPopup();
-            fetchCustomFacilities();  // Pastikan fungsi ini sudah ada
+            fetchCustomFacilities();
         })
         .catch(error => {
             console.error("Gagal memperbarui fasilitas custom:", error);
@@ -267,7 +258,6 @@ document.getElementById("formEditFasilitasCustom").addEventListener("submit", fu
         });
 });
 
-// Fungsi untuk menutup popup edit
 function closeEditPopup() {
     document.getElementById("popupEditFasilitasCustom").style.display = "none";
 }
@@ -286,7 +276,6 @@ function deleteCustomFacility(custom_facility_id) {
         return;
     }
 
-    // Kirim permintaan DELETE ke API dengan ID yang sesuai
     fetch(`https://kosconnect-server.vercel.app/api/customFacilities/${custom_facility_id}`, {
         method: 'DELETE',
         headers: {
@@ -294,19 +283,19 @@ function deleteCustomFacility(custom_facility_id) {
             'Content-Type': 'application/json'
         }
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log("Fasilitas custom berhasil dihapus:", data);
-        alert("Fasilitas custom berhasil dihapus!");
-        fetchCustomFacilities();  // Pastikan fungsi ini sudah ada
-    })
-    .catch(error => {
-        console.error("Gagal menghapus fasilitas custom:", error);
-        alert("Gagal menghapus fasilitas custom. Coba lagi.");
-    });
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Fasilitas custom berhasil dihapus:", data);
+            alert("Fasilitas custom berhasil dihapus!");
+            fetchCustomFacilities();
+        })
+        .catch(error => {
+            console.error("Gagal menghapus fasilitas custom:", error);
+            alert("Gagal menghapus fasilitas custom. Coba lagi.");
+        });
 }
