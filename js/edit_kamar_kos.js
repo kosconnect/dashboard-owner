@@ -148,31 +148,14 @@ async function fetchRoomById() {
         const data = await response.json();
         document.getElementById("tipeKamar").value = data.room_type;
         document.getElementById("ukuranKamar").value = data.size;
-        document.getElementById("kamarTersedia").value = data.number_available || 0;
+        document.getElementById("kamarTersedia").value = data.number_available;
 
-        const hargaKamar1 = document.getElementById("hargaKamar1");
-        const hargaKamar2 = document.getElementById("hargaKamar2");
-        const hargaKamar3 = document.getElementById("hargaKamar3");
-        const hargaKamar4 = document.getElementById("hargaKamar4");
-
-        hargaKamar1.value = data.price.monthly || "";
-        hargaKamar2.value = data.price.quarterly || "";
-        hargaKamar3.value = data.price.semi_annual || "";
-        hargaKamar4.value = data.price.yearly || "";
-
+        // Mengambil fasilitas kamar menggunakan endpoint baru
         const fasilitasKamarContainer = document.getElementById("fasilitasKamar");
         await fetchData("https://kosconnect-server.vercel.app/api/facility/type?type=room", fasilitasKamarContainer, "facility_id", "name", data.room_facilities, true);
 
+        // Mengisi fasilitas tambahan
         await fetchCustomFacilities(data.custom_facilities);
-
-        const imageContainer = document.querySelector(".image-inputs");
-        data.images.forEach((image, index) => {
-            const imageElement = document.createElement("img");
-            imageElement.src = image;
-            imageElement.alt = `Gambar ${index + 1}`;
-            imageElement.style.width = "100px";
-            imageContainer.appendChild(imageElement);
-        });
 
     } catch (error) {
         console.error("Error:", error);
@@ -197,16 +180,13 @@ document.getElementById("formEditRoom").addEventListener("submit", async functio
     const fasilitasTambahan = Array.from(document.querySelectorAll("input[name='fasilitasTambahan[]']:checked"))
         .map(opt => opt.value);
 
-    const imagesInput = document.getElementById("images");
-    const files = imagesInput.files;
+    const imagesInput = document.getElementById("images"); // Ambil elemen input gambar
+    const files = imagesInput.files; // Ambil file yang diunggah
 
-    // Validasi harga
     if (hargaInputs.every(harga => harga.trim() === "")) {
         alert("Minimal satu harga harus diisi");
         return;
     }
-
-    const validKamarTersedia = (isNaN(kamarTersedia) || kamarTersedia === "") ? 0 : kamarTersedia;
 
     const formData = new FormData();
     formData.append("room_type", tipeKamar);
@@ -215,10 +195,11 @@ document.getElementById("formEditRoom").addEventListener("submit", async functio
     formData.append("price_quarterly", hargaInputs[1] || "0");
     formData.append("price_semi_annual", hargaInputs[2] || "0");
     formData.append("price_yearly", hargaInputs[3] || "0");
-    formData.append("number_available", validKamarTersedia);
+    formData.append("number_available", kamarTersedia);
     formData.append("room_facilities", JSON.stringify(roomFacilities));
     formData.append("custom_facilities", JSON.stringify(fasilitasTambahan));
 
+    // Tambahkan gambar ke dalam FormData
     for (let i = 0; i < files.length; i++) {
         formData.append("images", files[i]);
     }
@@ -227,7 +208,7 @@ document.getElementById("formEditRoom").addEventListener("submit", async functio
         const response = await fetch(`https://kosconnect-server.vercel.app/api/rooms/${roomId}`, {
             method: "PUT",
             headers: {
-                "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${token}` // Perlu tanpa "Content-Type" karena FormData
             },
             body: formData
         });
