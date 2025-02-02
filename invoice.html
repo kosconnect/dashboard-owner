@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invoice | KosConnect</title>
+    <title>Detail Order | KosConnect</title>
     <link rel="shortcut icon" href="/img/logokos.png" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Signika:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
@@ -13,9 +13,36 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Merriweather+Sans:ital,wght@0,300..800;1,300..800&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap"
         rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/invoice.css">
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"
+        integrity="sha512-yFjZbTYRCJodnuyGlsKamNE/LlEaEAxSUDe5+u61mV8zzqJVFOH7TnULE2/PP/l5vKWpUNnF4VGVkXh3MjgLsg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+
+    <style>
+        #user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 20px;
+        }
+
+        #user-photo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #ccc;
+            /* Placeholder jika foto tidak ada */
+        }
+
+        #user-name,
+        #user-phone {
+            font-size: 1rem;
+            font-weight: bold;
+        }
+    </style>
 </head>
 
 <body>
@@ -48,31 +75,31 @@
                         <li><a href="custom_facility.html"><i class="fas fa-bed"></i> <span>Custom Facility</span></a>
                         </li>
                         <!-- <li><a href="feedback.html"><i class="fas fa-comments"></i> <span>Feedback / Review</span></a> -->
+                        </li>
+                        <li><a href="transaksi.html"><i class="fas fa-wallet"></i> <span>Transaksi</span></a></li>
+                        <!-- <li><a href="history.html"><i class="fas fa-history"></i> <span>History Pesanan</span></a></li> -->
+                    </ul>
                 </li>
-                <li><a href="transaksi.html"><i class="fas fa-wallet"></i> <span>Transaksi</span></a></li>
-                <!-- <li><a href="history.html"><i class="fas fa-history"></i> <span>History Pesanan</span></a></li> -->
-            </ul>
-            </li>
             </ul>
         </div>
 
-        <!-- Main Content -->
-        <div class="main-content">
-            <div class="dashboard-header">
-                <h1>Detail Order</h1>
-            </div>
+            <!-- Main Content -->
+            <div class="main-content">
+                <div class="dashboard-header">
+                    <h1>Detail Order</h1>
+                </div>
 
-            <div class="navigation">
-                <a href="transaksi.html" class="btn btn-primary" style="text-decoration: none;">
-                    <i class="fas fa-arrow-left"></i> Kembali
-                </a>
-            </div>
+                <div class="navigation">
+                    <a href="transaksi.html" class="btn btn-primary" style="text-decoration: none;">
+                        <i class="fas fa-arrow-left"></i> Kembali
+                    </a>
+                </div>
 
-            <div id="invoice"></div>
+                <div id="invoice"></div>
 
-             <!-- Memanggil file JS -->
-            <script defer src="js/invoice.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                <!-- Memanggil file JS -->
+                <script defer src="js/invoice.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>

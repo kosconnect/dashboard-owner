@@ -1,0 +1,243 @@
+.body {
+    font-family: 'Merriweather Sans', serif;
+}
+
+a {
+    text-decoration: none;
+    color: #333;
+}
+
+h4 {
+    margin: 0;
+}
+/* Order Card */
+.order-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #F5F4F0;
+    padding: 16px;
+    margin-bottom: 16px;
+    border-top: 10px solid #005f73;
+}
+
+.invoice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.left-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+    /* Memastikan elemen memenuhi seluruh lebar */
+}
+
+.left-header .brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    /* Membuat brand logo menyesuaikan lebar yang tersedia */
+}
+
+.left-header .brand-logo img {
+    width: 50px;
+    height: 50px;
+}
+
+.left-header .brand-logo h4 {
+    font-family: 'Merriweather', serif;
+    white-space: nowrap;
+    /* Mencegah pemisahan baris */
+    overflow: hidden;
+    /* Menghindari overflow */
+    text-overflow: ellipsis;
+    /* Tambahkan elipsis jika teks terlalu panjang */
+    font-size: 20px;
+    color: #005f73;
+    font-weight: bold;
+}
+
+.right-header {
+    font-family: 'Merriweather Sans', serif;
+    text-align: right;
+    white-space: nowrap;
+    /* Mencegah pemisahan baris */
+    overflow: hidden;
+    /* Menghindari overflow */
+    text-overflow: ellipsis;
+    /* Tambahkan elipsis jika teks terlalu panjang */
+    font-size: 20px;
+    color: #20B2AA;
+    font-weight: bold;
+}
+
+.order-details {
+    display: flex;
+    gap: 10px;
+}
+
+.left-top,
+.left-bottom,
+.center,
+.right {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+h6 {
+    font-family: 'Merriweather Sans', serif;
+    font-size: 18px;
+    color: #1b3446;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.order-date {
+    font-family: "Nunito", Arial, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #20B2AA;
+    flex-shrink: 0;
+    /* Mencegah elemen ini mengecil */
+}
+
+/* Left Section */
+.left-section {
+    position: relative;
+    flex: 1.5;
+    display: flex;
+    flex-direction: column;
+}
+.order-details p {
+    font-size: 0.9rem;
+    margin: 5px 0;
+    color: #005f73;
+}
+
+.order-details p strong {
+    color: #005f73;
+}
+
+.center {
+    position: relative;
+    font-size: 0.9rem;
+    flex: 1.5;
+}
+
+.center .title {
+    align-items: center;
+    text-align: center;
+}
+
+h5,
+.center p {
+    display: flex;
+    justify-content: space-between;
+}
+
+.fctotal {
+    border-top: 1px solid #1b3446;
+}
+
+.subtotal {
+    border-top: 1px solid #1b3446;
+}
+
+h5 {
+    font-family: 'Merriweather', serif;
+    font-weight: bold;
+    font-size: 20px;
+    color: #20B2AA;
+    border-top: 1px solid #1b3446;
+    margin-bottom: 30px;
+}
+span .total {
+    font-family: 'Merriweather', serif;
+}
+
+p.notice {
+    position: absolute;
+    margin-bottom: 0;
+    font-size: 10px;
+    bottom: 10px;
+}
+
+.left-top {
+    margin-bottom: 16px;
+}
+
+.kos-details,
+.user-details,
+.biaya-details {
+    font-size: 14px;
+}
+
+.user-details p {
+    margin-bottom: 4px;
+}
+
+.right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+}
+
+.right-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+    gap: 10px;
+    padding-left: 10px;
+    text-align: center;
+}
+
+.right-section .queue-number {
+    font-family: "Poppins", Arial, sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    color: #005f73;
+}
+
+.right img {
+    width: 30px;
+    height: 30px;
+}
+
+.status-icon {
+    width: 90px;
+    height: auto;
+}
+
+.status {
+    font-size: 24px;
+    color: #20B2AA;
+    font-weight: bold;
+    font-family: 'Merriweather', serif;
+}
+
+.cancel-button {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+
+.cancel-button:hover {
+    background-color: #c82333;
+}
