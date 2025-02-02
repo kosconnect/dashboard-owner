@@ -14,31 +14,23 @@ function getJwtToken() {
 // Ambil token dari cookie
 const token = getJwtToken();
 
-// Fungsi untuk mendapatkan boardingHouseId
-async function getBoardingHouseId() {
-    if (!token) {
-        console.error("Tidak ada token JWT, tidak dapat melanjutkan permintaan.");
-        return null;
-    }
+// Fungsi untuk mendapatkan role dan user_id dari JWT
+function getUserRoleAndId() {
+    if (!token) return { role: null, userId: null };
 
     try {
-        const response = await fetch("https://kosconnect-server.vercel.app/api/boardingHouses/boardingHouseID", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            }
-        });
-
-        if (!response.ok) throw new Error("Gagal mengambil boarding_house_id");
-
-        const data = await response.json();
-        return data.boarding_house_id; // Ambil boarding_house_id dari respons API
+        const payload = JSON.parse(atob(token.split('.')[1])); // Decode payload JWT
+        return {
+            role: payload.role || null,
+            userId: payload.user_id || null
+        };
     } catch (error) {
-        console.error("Error:", error);
-        return null;
+        console.error("Gagal mendekode JWT:", error);
+        return { role: null, userId: null };
     }
 }
+
+const { role, userId } = getUserRoleAndId();
 
 // Fungsi untuk fetch data dan isi dropdown atau checkbox
 async function fetchData(url, containerElement, keyId, keyName, isCheckbox = false) {
@@ -59,7 +51,6 @@ async function fetchData(url, containerElement, keyId, keyName, isCheckbox = fal
         if (!response.ok) throw new Error("Gagal mengambil data");
 
         const data = await response.json();
-
         const listData = data.data || data;
 
         if (!Array.isArray(listData)) {
@@ -105,9 +96,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Fetch data untuk kategori dan fasilitas
     fetchData("https://kosconnect-server.vercel.app/api/categories/", categoryKosContainer, "category_id", "name");
     fetchData("https://kosconnect-server.vercel.app/api/facility/type?type=boarding_house", fasilitasKosContainer, "facility_id", "name", true);
-
-    // Ambil boarding_house_id dan simpan ke dalam variabel global
-    window.boardingHouseId = await getBoardingHouseId();
 });
 
 // Fungsi untuk menangani submit form
@@ -134,7 +122,7 @@ document.getElementById("formTambahKos").addEventListener("submit", async functi
     });
 
     if (imageCount < 1) {
-        alert("Minimal satu gambar kamar harus diunggah!");
+        alert("Minimal satu gambar kos harus diunggah!");
         return;
     }
 
@@ -143,6 +131,7 @@ document.getElementById("formTambahKos").addEventListener("submit", async functi
         return;
     }
 
+    // Tambahkan data form
     formData.append("category_id", categoryKos);
     formData.append("name", namaKos);
     formData.append("address", alamatKos);
@@ -150,14 +139,21 @@ document.getElementById("formTambahKos").addEventListener("submit", async functi
     formData.append("rules", rulesKos);
     formData.append("facilities", JSON.stringify(fasilitasKos));
 
-     // Masukkan boarding_house_id jika sudah didapatkan
-     if (window.boardingHouseId) {
-        formData.append("boarding_house_id", window.boardingHouseId);
-    } else {
-        console.error("boarding_house_id tidak ditemukan!");
-        alert("Gagal mengambil ID kos. Silakan coba lagi.");
-        return;
-    }
+    // Jika role admin, tambahkan owner_id
+    // if (role === "admin") {
+    //     const ownerIdInput = document.getElementById("ownerId");
+    //     if (!ownerIdInput || !ownerIdInput.value) {
+    //         alert("Owner ID harus diisi oleh admin.");
+    //         return;
+    //     }
+    //     formData.append("owner_id", ownerIdInput.value);
+    // } else if (role === "owner") {
+    //     formData.append("owner_id", userId);
+    // } else {
+    //     console.error("Role tidak valid!");
+    //     alert("Anda tidak memiliki izin untuk membuat kos.");
+    //     return;
+    // }
 
     console.log("Data yang dikirim:", Object.fromEntries(formData.entries()));
 
@@ -170,12 +166,15 @@ document.getElementById("formTambahKos").addEventListener("submit", async functi
             body: formData
         });
 
-        if (!response.ok) throw new Error("Gagal menyimpan data");
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || "Gagal menyimpan data");
+        }
 
         alert("Kos berhasil ditambahkan!");
         window.location.href = "manajemen_kos.html"; // Redirect setelah sukses
     } catch (error) {
         console.error("Error:", error);
-        alert("Terjadi kesalahan saat menambahkan kos.");
+        alert(`Terjadi kesalahan: ${error.message}`);
     }
 });
