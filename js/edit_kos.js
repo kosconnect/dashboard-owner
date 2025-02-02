@@ -14,7 +14,7 @@ function getJwtToken() {
 // Ambil token dari cookie
 const token = getJwtToken();
 const urlParams = new URLSearchParams(window.location.search);
-const boardingHouseId = urlParams.get("id"); // Sesuai dengan boarding_house_id dari URL
+const boardingHouseId = urlParams.get("boarding_house_id"); // Sesuai dengan boarding_house_id dari URL
 
 // Fungsi untuk fetch data dan isi dropdown atau checkbox
 async function fetchData(url, containerElement, keyId, keyName, isCheckbox = false) {
@@ -97,8 +97,6 @@ async function fetchBoardingHouseById() {
         document.getElementById("categoryKos").value = boardingHouse.category_id || "";
         document.getElementById("namaKos").value = boardingHouse.name || "";
         document.getElementById("alamatKos").value = boardingHouse.address || "";
-        document.getElementById("longitudeKos").value = boardingHouse.longitude || "";
-        document.getElementById("latitudeKos").value = boardingHouse.latitude || "";
         document.getElementById("descriptionKos").value = boardingHouse.description || "";
         document.getElementById("rulesKos").value = boardingHouse.rules || "";
 
@@ -135,8 +133,6 @@ document.getElementById("formEditKos").addEventListener("submit", async function
     const categoryKos = document.getElementById("categoryKos").value;
     const namaKos = document.getElementById("namaKos").value;
     const alamatKos = document.getElementById("alamatKos").value;
-    const longitudeKos = document.getElementById("longitudeKos").value;
-    const latitudeKos = document.getElementById("latitudeKos").value;
     const descriptionKos = document.getElementById("descriptionKos").value;
     const rulesKos = document.getElementById("rulesKos").value;
 
@@ -159,12 +155,10 @@ document.getElementById("formEditKos").addEventListener("submit", async function
         return;
     }
 
-    formData.append("boarding_house_id", boardingHouseId); // Menggunakan boarding_house_id
+formData.append("boarding_house_id", boardingHouseId); // Menggunakan boarding_house_id
     formData.append("category_id", categoryKos);
     formData.append("name", namaKos);
     formData.append("address", alamatKos);
-    formData.append("longitude", longitudeKos);
-    formData.append("latitude", latitudeKos);
     formData.append("description", descriptionKos);
     formData.append("rules", rulesKos);
     formData.append("facilities", JSON.stringify(fasilitasKos));
