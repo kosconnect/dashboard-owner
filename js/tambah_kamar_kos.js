@@ -145,6 +145,7 @@ document.getElementById("formTambahKamar").addEventListener("submit", async func
     formData.append("price_quarterly", hargaKamar[1] || 0); // Harga kedua (jika ada)
     formData.append("price_semi_annual", hargaKamar[2] || 0); // Harga ketiga (jika ada)
     formData.append("price_yearly", hargaKamar[3] || 0); // Harga keempat (jika ada)
+    formData.append("available_rooms", kamarTersedia);
     formData.append("room_facilities", JSON.stringify(fasilitasKamar));
     formData.append("custom_facilities", JSON.stringify(fasilitasTambahan));
 
