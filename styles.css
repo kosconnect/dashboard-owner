@@ -690,7 +690,7 @@ textarea {
     max-width: 150px;
   }
 
-.btn-add, .btn-edit, .btn-delete {
+.btn-add, .btn-edit, .btn-delete, .btn-lihat {
     width: 150px;
     display: inline-block;
     margin-bottom: 10px;
@@ -708,7 +708,7 @@ textarea {
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.btn-add:hover, .btn-edit:hover, .btn-delete:hover {
+.btn-add:hover, .btn-edit:hover, .btn-delete:hover, .btn-lihat:hover {
     background-color: white;
     color: #20B2AA;
     border: 1px solid #20B2AA;
