@@ -192,27 +192,26 @@ function openEditPopup(custom_facility_id) {
             // Isi form dengan data fasilitas yang akan diedit
             document.getElementById("namaFasilitasCustom").value = data.name;
             document.getElementById("hargaFasilitas").value = data.price;
-    
+
             // Tampilkan popup
             document.getElementById("popupEditFasilitasCustom").style.display = "block";
-    
+
             // Simpan ID fasilitas untuk PUT
             document.getElementById("formEditFasilitasCustom").setAttribute('data-id', custom_facility_id);
         })
         .catch(error => {
             console.error("Gagal mengambil data fasilitas:", error);
+            alert("Gagal mengambil data fasilitas. Coba lagi.");
         });
-    }
+}
 
 // Fungsi untuk menangani pengiriman form untuk PUT
 document.getElementById("formEditFasilitasCustom").addEventListener("submit", function (event) {
     event.preventDefault();  // Mencegah form dari pengiriman default
 
-    // Ambil data dari form
     const namaFasilitas = document.getElementById("namaFasilitasCustom").value;
     const hargaFasilitas = document.getElementById("hargaFasilitas").value;
 
-    // Ambil token JWT dari cookies
     const jwtToken = getJwtToken();
     if (!jwtToken) {
         console.error("Tidak ada token JWT, tidak dapat melanjutkan permintaan.");
@@ -229,7 +228,7 @@ document.getElementById("formEditFasilitasCustom").addEventListener("submit", fu
     // Membuat data yang akan dikirim
     const data = {
         name: namaFasilitas,
-        price: parseFloat(hargaFasilitas)  // Pastikan harga dalam bentuk angka
+        price: parseFloat(hargaFasilitas)
     };
 
     // Kirim data menggunakan fetch (PUT)
@@ -239,34 +238,24 @@ document.getElementById("formEditFasilitasCustom").addEventListener("submit", fu
             'Authorization': `Bearer ${jwtToken}`,
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)  // Mengirim data dalam format JSON
+        body: JSON.stringify(data)
     })
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            return response.json();  // Mengambil response dalam format JSON
+            return response.json();
         })
         .then(data => {
             console.log("Fasilitas custom berhasil diperbarui:", data);
-
-            // Menampilkan alert sukses
             alert("Fasilitas custom berhasil diperbarui!");
-
-            // Kosongkan form setelah berhasil mengupdate data
             document.getElementById("namaFasilitasCustom").value = '';
             document.getElementById("hargaFasilitas").value = '';
-
-            // Tutup popup setelah berhasil
             closeEditPopup();
-
-            // Refresh data fasilitas custom
-            fetchCustomFacilities();
+            fetchCustomFacilities();  // Pastikan fungsi ini sudah ada
         })
         .catch(error => {
             console.error("Gagal memperbarui fasilitas custom:", error);
-
-            // Menampilkan alert gagal
             alert("Gagal memperbarui fasilitas custom. Coba lagi.");
         });
 });
@@ -285,13 +274,12 @@ function deleteCustomFacility(custom_facility_id) {
         return;
     }
 
-    // Tanyakan konfirmasi sebelum menghapus
     const confirmation = confirm("Apakah Anda yakin ingin menghapus fasilitas ini?");
     if (!confirmation) {
-        return;  // Hentikan jika pengguna tidak mengonfirmasi
+        return;
     }
 
-    // Kirim permintaan DELETE ke API
+    // Kirim permintaan DELETE ke API dengan ID yang sesuai
     fetch(`https://kosconnect-server.vercel.app/api/customFacilities/${custom_facility_id}`, {
         method: 'DELETE',
         headers: {
@@ -307,17 +295,11 @@ function deleteCustomFacility(custom_facility_id) {
     })
     .then(data => {
         console.log("Fasilitas custom berhasil dihapus:", data);
-
-        // Menampilkan alert sukses
         alert("Fasilitas custom berhasil dihapus!");
-
-        // Refresh data fasilitas custom setelah dihapus
-        fetchCustomFacilities();
+        fetchCustomFacilities();  // Pastikan fungsi ini sudah ada
     })
     .catch(error => {
         console.error("Gagal menghapus fasilitas custom:", error);
-
-        // Menampilkan alert gagal
         alert("Gagal menghapus fasilitas custom. Coba lagi.");
     });
 }
