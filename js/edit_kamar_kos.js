@@ -109,7 +109,7 @@ async function fetchRoomById() {
     }
 }
 document.addEventListener("DOMContentLoaded", async () => {
-    const facilitiesContainer = document.getElementById("roomFacilities");
+    const facilitiesContainer = document.getElementById("fasilitasKamar");
     if (!facilitiesContainer) {
         console.error("Element #roomFacilities tidak ditemukan!");
         return;
