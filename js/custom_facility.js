@@ -91,3 +91,13 @@ function fetchCustomFacilities() {
 
 // Panggil fungsi fetch ketika halaman dimuat
 document.addEventListener('DOMContentLoaded', fetchCustomFacilities);
+
+// Fungsi untuk membuka popup
+function openPopup() {
+    document.getElementById("popupTambahFasilitasCustom").style.display = "block";
+}
+
+// Fungsi untuk menutup popup
+function closePopup() {
+    document.getElementById("popupTambahFasilitasCustom").style.display = "none";
+}
