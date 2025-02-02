@@ -150,8 +150,37 @@ document.getElementById("btnTambahKamarKos").addEventListener("click", function(
     }
 });
 
+
+// DELETE
 // Fungsi untuk membaca boarding_house_id dari URL
 function getBoardingHouseIdFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get("boarding_house_id");
+}
+
+async function deleteRoom(roomId) {
+    const confirmDelete = confirm("Apakah Anda yakin ingin menghapus kamar kos ini?");
+
+    if (!confirmDelete) return; // Jika user membatalkan, tidak lanjutkan
+
+    try {
+        const authToken = getCookie("authToken"); // Ambil token dari cookie
+        const response = await fetch(`https://kosconnect-server.vercel.app/api/rooms/${roomId}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${authToken}` // Pastikan token sudah disertakan
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error("Gagal menghapus kamar kos");
+        }
+
+        alert("Kamar kos berhasil dihapus!");
+        window.location.href = 'manajemen_kamar_kos.html'; // Kembali ke halaman manajemen kamar kos
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Terjadi kesalahan saat menghapus kamar kos.");
+    }
 }
