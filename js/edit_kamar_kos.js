@@ -69,7 +69,6 @@ async function fetchData(url, containerElement, keyId, keyName, isCheckbox = fal
     }
 }
 
-// Fungsi untuk mengambil fasilitas tambahan (custom facility)
 async function fetchCustomFacilities(selectedFacilities = []) {
     if (!token) {
         console.error("Tidak ada token JWT, tidak dapat melanjutkan permintaan.");
@@ -103,11 +102,10 @@ async function fetchCustomFacilities(selectedFacilities = []) {
             const checkboxInput = document.createElement("input");
             checkboxInput.type = "checkbox";
             checkboxInput.name = "fasilitasTambahan[]";
-            checkboxInput.value = item.facility_id;
-            checkboxInput.id = `fasilitasTambahan_${item.facility_id}`;
+            checkboxInput.value = item.custom_facility_id;
+            checkboxInput.id = `fasilitasTambahan_${item.custom_facility_id}`;
 
-            // Jika fasilitas sudah dipilih, centang checkbox
-            if (selectedFacilities.includes(item.facility_id)) {
+            if (selectedFacilities.includes(item.custom_facility_id)) {
                 checkboxInput.checked = true;
             }
 
@@ -120,20 +118,14 @@ async function fetchCustomFacilities(selectedFacilities = []) {
             fasilitasTambahanContainer.appendChild(checkboxWrapper);
         });
 
-        console.log("Fasilitas tambahan berhasil dimuat.");
-
     } catch (error) {
         console.error("Error:", error);
     }
 }
 
-
 async function fetchRoomById() {
-    const boardingHouseId = getBoardingHouseIdFromURL();
-    const roomId = getRoomIdFromURL(); // Pastikan ada fungsi ini untuk mengambil `room_id`
-
-    if (!boardingHouseId || !roomId) {
-        console.error("Boarding House ID atau Room ID tidak ditemukan.");
+    if (!roomId) {
+        console.error("Room ID tidak ditemukan.");
         return;
     }
 
@@ -141,7 +133,6 @@ async function fetchRoomById() {
         const response = await fetch(`https://kosconnect-server.vercel.app/api/rooms/${roomId}`, {
             method: "GET",
             headers: {
-                "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`
             }
         });
@@ -149,38 +140,17 @@ async function fetchRoomById() {
         if (!response.ok) throw new Error("Gagal mengambil data kamar");
 
         const data = await response.json();
-
-        // Isi form dengan data kamar
         document.getElementById("tipeKamar").value = data.room_type;
         document.getElementById("ukuranKamar").value = data.size;
         document.getElementById("kamarTersedia").value = data.number_available;
 
-        // Menandai harga kamar
-        const hargaInputs = document.querySelectorAll(".hargaKamar");
-        hargaInputs[0].value = data.price_monthly || "";
-        hargaInputs[1].value = data.price_quarterly || "";
-        hargaInputs[2].value = data.price_semi_annual || "";
-        hargaInputs[3].value = data.price_yearly || "";
-
-        // Ambil fasilitas tambahan yang sudah dipilih
-        const selectedCustomFacilities = data.custom_facilities || [];
-        console.log("Fasilitas tambahan yang sudah dipilih:", selectedCustomFacilities);
-
-        // Panggil fetchCustomFacilities dengan fasilitas yang sudah dipilih
-        await fetchCustomFacilities(selectedCustomFacilities);
-
+        await fetchCustomFacilities(data.custom_facilities);
     } catch (error) {
         console.error("Error:", error);
     }
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-    const facilitiesContainer = document.getElementById("fasilitasKamar");
-    if (!facilitiesContainer) {
-        console.error("Element #fasilitasKamar tidak ditemukan!");
-        return;
-    }
-    await fetchData("https://kosconnect-server.vercel.app/api/facility/type?type=room", facilitiesContainer, "facility_id", "name", true);
     await fetchRoomById();
 });
 
@@ -192,10 +162,14 @@ document.getElementById("formEditRoom").addEventListener("submit", async functio
     const hargaInputs = Array.from(document.querySelectorAll(".hargaKamar")).map(input => input.value);
     const kamarTersedia = document.getElementById("kamarTersedia").value;
 
-    const roomFacilities = Array.from(document.querySelectorAll("input[name='roomFacilities[]']:checked")).map(opt => opt.value);
+    const roomFacilities = Array.from(document.querySelectorAll("input[name='roomFacilities[]']:checked"))
+        .map(opt => opt.value);
+    
     const fasilitasTambahan = Array.from(document.querySelectorAll("input[name='fasilitasTambahan[]']:checked"))
-        .map(opt => opt.value)
-        .filter(value => value !== "undefined" && value !== "");
+        .map(opt => opt.value);
+
+    const imagesInput = document.getElementById("images"); // Ambil elemen input gambar
+    const files = imagesInput.files; // Ambil file yang diunggah
 
     if (hargaInputs.every(harga => harga.trim() === "")) {
         alert("Minimal satu harga harus diisi");
@@ -205,24 +179,32 @@ document.getElementById("formEditRoom").addEventListener("submit", async functio
     const formData = new FormData();
     formData.append("room_type", tipeKamar);
     formData.append("size", ukuranKamar);
-    formData.append("price_monthly", hargaInputs[0] || '');
-    formData.append("price_quarterly", hargaInputs[1] || '');
-    formData.append("price_semi_annual", hargaInputs[2] || '');
-    formData.append("price_yearly", hargaInputs[3] || '');
+    formData.append("price_monthly", hargaInputs[0] || "0");
+    formData.append("price_quarterly", hargaInputs[1] || "0");
+    formData.append("price_semi_annual", hargaInputs[2] || "0");
+    formData.append("price_yearly", hargaInputs[3] || "0");
     formData.append("number_available", kamarTersedia);
     formData.append("room_facilities", JSON.stringify(roomFacilities));
     formData.append("custom_facilities", JSON.stringify(fasilitasTambahan));
+
+    // Tambahkan gambar ke dalam FormData
+    for (let i = 0; i < files.length; i++) {
+        formData.append("images", files[i]);
+    }
 
     try {
         const response = await fetch(`https://kosconnect-server.vercel.app/api/rooms/${roomId}`, {
             method: "PUT",
             headers: {
-                "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${token}` // Perlu tanpa "Content-Type" karena FormData
             },
             body: formData
         });
 
-        if (!response.ok) throw new Error("Gagal memperbarui data kamar");
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || "Gagal memperbarui data kamar");
+        }
 
         alert("Kamar berhasil diperbarui!");
         window.location.href = "manajemen_kamar.html";
