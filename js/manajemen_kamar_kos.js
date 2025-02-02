@@ -99,7 +99,7 @@ window.onload = async () => {
     try {
         const authToken = getCookie("authToken");
         const response = await fetch(
-            "https://kosconnect-server.vercel.app/api/rooms/boarding-house/room_id",
+            "https://kosconnect-server.vercel.app/api/rooms/boarding-house/boarding_house_id",
             {
                 method: "GET",
                 headers: {
