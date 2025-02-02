@@ -14,6 +14,12 @@ function getJwtToken() {
 // Ambil token dari cookie
 const token = getJwtToken();
 
+// Fungsi untuk mengambil boardingHouseID dari URL
+function getBoardingHouseIdFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('boarding_house_id');
+}
+
 // Fungsi untuk fetch data dan isi checkbox
 async function fetchData(url, containerElement, keyId, keyName) {
     if (!token) {
@@ -133,12 +139,14 @@ document.getElementById("formTambahKamar").addEventListener("submit", async func
         return;
     }
 
-    formData.append("type", tipeKamar);
+    formData.append("room_type", tipeKamar);
     formData.append("size", ukuranKamar);
-    formData.append("price", JSON.stringify(hargaKamar));
-    formData.append("available_rooms", kamarTersedia);
-    formData.append("facilities", JSON.stringify(fasilitasKamar));
-    formData.append("additional_facilities", JSON.stringify(fasilitasTambahan));
+    formData.append("price_monthly", hargaKamar[0]); // Mengirim harga pertama
+    formData.append("price_quarterly", hargaKamar[1] || 0); // Harga kedua (jika ada)
+    formData.append("price_semi_annual", hargaKamar[2] || 0); // Harga ketiga (jika ada)
+    formData.append("price_yearly", hargaKamar[3] || 0); // Harga keempat (jika ada)
+    formData.append("room_facilities", JSON.stringify(fasilitasKamar));
+    formData.append("custom_facilities", JSON.stringify(fasilitasTambahan));
 
     console.log("Data yang dikirim:", Object.fromEntries(formData.entries()));
 
