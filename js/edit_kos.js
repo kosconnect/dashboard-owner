@@ -91,17 +91,19 @@ async function fetchBoardingHouseById() {
         if (!response.ok) throw new Error("Gagal mengambil data kos");
 
         const data = await response.json();
+        const boardingHouse = data.boardingHouse; // Perbaikan akses data utama
 
-        document.getElementById("categoryKos").value = data.category_id;
-        document.getElementById("namaKos").value = data.name;
-        document.getElementById("alamatKos").value = data.address;
-        document.getElementById("longitudeKos").value = data.longitude;
-        document.getElementById("latitudeKos").value = data.latitude;
-        document.getElementById("descriptionKos").value = data.description;
-        document.getElementById("rulesKos").value = data.rules;
+        // Mengisi form dengan data yang benar
+        document.getElementById("categoryKos").value = boardingHouse.category_id || "";
+        document.getElementById("namaKos").value = boardingHouse.name || "";
+        document.getElementById("alamatKos").value = boardingHouse.address || "";
+        document.getElementById("longitudeKos").value = boardingHouse.longitude || "";
+        document.getElementById("latitudeKos").value = boardingHouse.latitude || "";
+        document.getElementById("descriptionKos").value = boardingHouse.description || "";
+        document.getElementById("rulesKos").value = boardingHouse.rules || "";
 
         // Centang fasilitas yang sesuai
-        const selectedFacilities = new Set(data.facilities.map(facility => facility.facility_id));
+        const selectedFacilities = new Set(boardingHouse.facilities_id); // Pastikan cocok dengan fasilitas_id
         document.querySelectorAll("input[name='fasilitasKos[]']").forEach(input => {
             if (selectedFacilities.has(input.value)) {
                 input.checked = true;
