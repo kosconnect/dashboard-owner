@@ -14,6 +14,32 @@ function getJwtToken() {
 // Ambil token dari cookie
 const token = getJwtToken();
 
+// Fungsi untuk mendapatkan boardingHouseId
+async function getBoardingHouseId() {
+    if (!token) {
+        console.error("Tidak ada token JWT, tidak dapat melanjutkan permintaan.");
+        return null;
+    }
+
+    try {
+        const response = await fetch("https://kosconnect-server.vercel.app/api/boardingHouses/boardingHouseID", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) throw new Error("Gagal mengambil boarding_house_id");
+
+        const data = await response.json();
+        return data.boarding_house_id; // Ambil boarding_house_id dari respons API
+    } catch (error) {
+        console.error("Error:", error);
+        return null;
+    }
+}
+
 // Fungsi untuk fetch data dan isi dropdown atau checkbox
 async function fetchData(url, containerElement, keyId, keyName, isCheckbox = false) {
     if (!token) {
@@ -26,7 +52,7 @@ async function fetchData(url, containerElement, keyId, keyName, isCheckbox = fal
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}` // Pastikan token digunakan dengan benar
+                "Authorization": `Bearer ${token}`
             }
         });
 
@@ -34,20 +60,16 @@ async function fetchData(url, containerElement, keyId, keyName, isCheckbox = fal
 
         const data = await response.json();
 
-        // Pastikan data memiliki properti "data" yang berisi array
-        const listData = data.data || data; // Untuk kategori dan fasilitas
+        const listData = data.data || data;
 
         if (!Array.isArray(listData)) {
             throw new Error("Format data tidak sesuai");
         }
 
-        // Kosongkan container sebelum diisi
-        containerElement.innerHTML = isCheckbox ? "" : `<option value="">Pilih</option>`; // kosongkan jika checkbox, atau pilih untuk dropdown
+        containerElement.innerHTML = isCheckbox ? "" : `<option value="">Pilih</option>`;
 
-        // Tambahkan data ke container (dropdown/checkbox)
         listData.forEach(item => {
             if (isCheckbox) {
-                // Membuat checkbox untuk fasilitas
                 const checkboxWrapper = document.createElement("div");
                 const checkboxInput = document.createElement("input");
                 checkboxInput.type = "checkbox";
@@ -63,7 +85,6 @@ async function fetchData(url, containerElement, keyId, keyName, isCheckbox = fal
                 checkboxWrapper.appendChild(checkboxLabel);
                 containerElement.appendChild(checkboxWrapper);
             } else {
-                // Membuat option untuk dropdown
                 const option = document.createElement("option");
                 option.value = item[keyId];
                 option.textContent = item[keyName];
@@ -76,14 +97,17 @@ async function fetchData(url, containerElement, keyId, keyName, isCheckbox = fal
     }
 }
 
-// Panggil fungsi untuk mengisi dropdown dan checkbox saat halaman dimuat
-document.addEventListener("DOMContentLoaded", () => {
+// Panggil fungsi saat halaman dimuat
+document.addEventListener("DOMContentLoaded", async () => {
     const categoryKosContainer = document.getElementById("categoryKos");
     const fasilitasKosContainer = document.getElementById("fasilitasKos");
 
-    // Fetch data untuk Category, dan Facility
+    // Fetch data untuk kategori dan fasilitas
     fetchData("https://kosconnect-server.vercel.app/api/categories/", categoryKosContainer, "category_id", "name");
     fetchData("https://kosconnect-server.vercel.app/api/facility/type?type=boarding_house", fasilitasKosContainer, "facility_id", "name", true);
+
+    // Ambil boarding_house_id dan simpan ke dalam variabel global
+    window.boardingHouseId = await getBoardingHouseId();
 });
 
 // Fungsi untuk menangani submit form
@@ -96,11 +120,9 @@ document.getElementById("formTambahKos").addEventListener("submit", async functi
     const descriptionKos = document.getElementById("descriptionKos").value;
     const rulesKos = document.getElementById("rulesKos").value;
 
-    // Ambil fasilitas yang dipilih (bisa lebih dari satu)
     const fasilitasKos = Array.from(document.querySelectorAll("input[name='fasilitasKos[]']:checked")).map(opt => opt.value);
+    const imageInputs = document.querySelectorAll("input[name='imagesKos[]']");
 
-    const imageInputs = document.querySelectorAll("input[name='imagesKos[]']");  
-    
     let imageCount = 0;
     const formData = new FormData();
 
@@ -121,33 +143,29 @@ document.getElementById("formTambahKos").addEventListener("submit", async functi
         return;
     }
 
-    console.log("Fasilitas yang dikirimkan: ", fasilitasKos);
-
     formData.append("category_id", categoryKos);
     formData.append("name", namaKos);
     formData.append("address", alamatKos);
     formData.append("description", descriptionKos);
     formData.append("rules", rulesKos);
-
-    // Tambahkan fasilitas ke FormData dalam format array JSON
-    // fasilitasKos.forEach(facility => {
-    //     formData.append("facilities[]", facility);
-    // });
-
     formData.append("facilities", JSON.stringify(fasilitasKos));
 
-    // Tambahkan file gambar jika ada
-    // for (let i = 0; i < imagesKos.length; i++) {
-    //     formData.append("images", imagesKos[i]);
-    // }
+     // Masukkan boarding_house_id jika sudah didapatkan
+     if (window.boardingHouseId) {
+        formData.append("boarding_house_id", window.boardingHouseId);
+    } else {
+        console.error("boarding_house_id tidak ditemukan!");
+        alert("Gagal mengambil ID kos. Silakan coba lagi.");
+        return;
+    }
 
     console.log("Data yang dikirim:", Object.fromEntries(formData.entries()));
-    
+
     try {
         const response = await fetch("https://kosconnect-server.vercel.app/api/boardingHouses/", {
             method: "POST",
             headers: {
-                "Authorization": `Bearer ${token}` // Jika API memerlukan autentikasi
+                "Authorization": `Bearer ${token}`
             },
             body: formData
         });
