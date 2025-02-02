@@ -178,7 +178,7 @@ async function deleteRoom(roomId) {
         }
 
         alert("Kamar kos berhasil dihapus!");
-        window.location.href = 'manajemen_kamar_kos.html'; // Kembali ke halaman manajemen kamar kos
+        window.location.href = `manajemen_kamar_kos.html?boarding_house_id=${boardingHouseId}`;
     } catch (error) {
         console.error("Error:", error);
         alert("Terjadi kesalahan saat menghapus kamar kos.");
