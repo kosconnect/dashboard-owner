@@ -88,16 +88,16 @@ async function fetchRoomById() {
 
         const data = await response.json();
 
-        document.getElementById("roomType").value = data.room.room_type || '';
-        document.getElementById("size").value = data.room.size || '';
-        document.getElementById("priceMonthly").value = data.room.price_monthly || '';
-        document.getElementById("priceQuarterly").value = data.room.price_quarterly || '';
-        document.getElementById("priceSemiAnnual").value = data.room.price_semi_annual || '';
-        document.getElementById("priceYearly").value = data.room.price_yearly || '';
-        document.getElementById("numberAvailable").value = data.room.number_available || '';
+        document.getElementById("roomType").value = data.data.room_type || '';
+        document.getElementById("size").value = data.data.size || '';
+        document.getElementById("priceMonthly").value = data.data.price?.monthly || '';
+        document.getElementById("priceQuarterly").value = data.data.price?.quarterly || '';
+        document.getElementById("priceSemiAnnual").value = data.data.price?.semi_annual || '';
+        document.getElementById("priceYearly").value = data.data.price?.yearly || '';
+        document.getElementById("numberAvailable").value = data.data.number_available || '';
 
-        if (Array.isArray(data.room.facilities_id) && data.room.facilities_id.length > 0) {
-            const selectedFacilities = new Set(data.room.facilities_id);
+        if (Array.isArray(data.data.room_facilities) && data.data.room_facilities.length > 0) {
+            const selectedFacilities = new Set(data.data.room_facilities);
             document.querySelectorAll("input[name='roomFacilities[]']").forEach(input => {
                 if (selectedFacilities.has(input.value)) {
                     input.checked = true;
@@ -108,9 +108,12 @@ async function fetchRoomById() {
         console.error("Error:", error);
     }
 }
-
 document.addEventListener("DOMContentLoaded", async () => {
     const facilitiesContainer = document.getElementById("roomFacilities");
+    if (!facilitiesContainer) {
+        console.error("Element #roomFacilities tidak ditemukan!");
+        return;
+    }
     await fetchData("https://kosconnect-server.vercel.app/api/facility/type?type=room", facilitiesContainer, "facility_id", "name", true);
     await fetchRoomById();
 });
