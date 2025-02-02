@@ -98,8 +98,18 @@ async function fetchBoardingHouseById() {
         document.getElementById("descriptionKos").value = data.description;
         document.getElementById("rulesKos").value = data.rules;
 
+        // Menambahkan gambar yang sudah ada
+        const imageContainer = document.querySelector(".image-inputs");
+        data.images.forEach((image, index) => {
+            const imageElement = document.createElement("img");
+            imageElement.src = image;
+            imageElement.alt = `Gambar ${index + 1}`;
+            imageElement.style.width = "100px"; // Gaya gambar jika perlu
+            imageContainer.appendChild(imageElement);
+        });
+
         // Centang fasilitas yang sesuai
-        const selectedFacilities = new Set(data.facilities.map(facility => facility.facility_id));
+        const selectedFacilities = new Set(data.facilities_id);
         document.querySelectorAll("input[name='fasilitasKos[]']").forEach(input => {
             if (selectedFacilities.has(input.value)) {
                 input.checked = true;
