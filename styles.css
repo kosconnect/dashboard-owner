@@ -553,6 +553,143 @@ form .btn-primary {
     margin-top: 15px;
 }
 
+.form-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* Style untuk input teks */
+input[type="text"],
+input[type="number"],
+textarea,
+select {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+/* Styling untuk input file gambar */
+input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+/* Style untuk dropdown select */
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/svgs/solid/caret-down.svg') no-repeat right 10px center;
+    background-size: 12px;
+    padding-right: 30px;
+    cursor: pointer;
+}
+
+/* Style untuk textarea */
+textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    resize: none;
+    /* Disable resizing */
+    margin-bottom: 15px;
+}
+
+
+/* Styling untuk pratinjau gambar */
+.image-preview-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+/* Gambar pratinjau */
+.image-preview {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Hover effect pada gambar */
+.image-preview:hover {
+    opacity: 0.8;
+}
+
+.btn-batal {
+    width: 100%;
+    padding: 14px;
+    font-size: 18px;
+    background-color: #005f73;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    gap: 10px;
+}
+
+.btn-batal,
+.btn-save {
+    width: auto;
+    /* Pastikan tombol tidak memenuhi 100% */
+    padding: 14px;
+    font-size: 18px;
+    background-color: #005f73;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-batal {
+    margin-right: 10px;
+    /* Jarak antara tombol */
+}
+
+.btn-batal:hover,
+.btn-simpan:hover {
+    background-color: #003f53;
+}
+
+.image-inputs {
+    display: flex;
+    gap: 10px; /* Menambahkan jarak antar input */
+    flex-wrap: wrap; /* Agar tetap responsif jika layar kecil */
+  }
+  
+  .image-inputs input {
+    flex: 1 0 18%; /* Setiap input mengambil 18% dari lebar kontainer */
+    max-width: 300px;
+  }
+  
+  .harga-inputs {
+    display: flex;
+    gap: 10px; /* Menambahkan jarak antar input */
+    flex-wrap: wrap; /* Agar tetap responsif jika layar kecil */
+  }
+  
+  .harga-inputs input {
+    flex: 1 0 18%; /* Setiap input mengambil 18% dari lebar kontainer */
+    max-width: 150px;
+  }
+
 .btn-add, .btn-edit, .btn-delete {
     width: 150px;
     display: inline-block;
