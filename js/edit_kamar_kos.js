@@ -15,7 +15,7 @@ const token = getJwtToken();
 const urlParams = new URLSearchParams(window.location.search);
 const roomId = urlParams.get("room_id");
 
-async function fetchData(url, containerElement, keyId, keyName, isCheckbox = false) {
+async function fetchData(url, containerElement, keyId, keyName, selectedItems = [], isCheckbox = false) {
     if (!token) {
         console.error("Tidak ada token JWT, tidak dapat melanjutkan permintaan.");
         return;
@@ -49,6 +49,11 @@ async function fetchData(url, containerElement, keyId, keyName, isCheckbox = fal
                 checkboxInput.name = "roomFacilities[]";
                 checkboxInput.value = item[keyId];
                 checkboxInput.id = `facility_${item[keyId]}`;
+
+                // Periksa apakah fasilitas ini sudah ada dalam selectedItems dan centang checkbox yang sesuai
+                if (selectedItems.includes(item[keyId])) {
+                    checkboxInput.checked = true;
+                }
 
                 const checkboxLabel = document.createElement("label");
                 checkboxLabel.setAttribute("for", checkboxInput.id);
@@ -105,6 +110,7 @@ async function fetchCustomFacilities(selectedFacilities = []) {
             checkboxInput.value = item.custom_facility_id;
             checkboxInput.id = `fasilitasTambahan_${item.custom_facility_id}`;
 
+            // Periksa apakah fasilitas ini sudah ada dalam selectedFacilities dan centang checkbox yang sesuai
             if (selectedFacilities.includes(item.custom_facility_id)) {
                 checkboxInput.checked = true;
             }
@@ -144,7 +150,13 @@ async function fetchRoomById() {
         document.getElementById("ukuranKamar").value = data.size;
         document.getElementById("kamarTersedia").value = data.number_available;
 
+        // Mengambil fasilitas kamar menggunakan endpoint baru
+        const fasilitasKamarContainer = document.getElementById("fasilitasKamar");
+        await fetchData("https://kosconnect-server.vercel.app/api/facility/type?type=room", fasilitasKamarContainer, "facility_id", "name", data.room_facilities, true);
+
+        // Mengisi fasilitas tambahan
         await fetchCustomFacilities(data.custom_facilities);
+
     } catch (error) {
         console.error("Error:", error);
     }
@@ -164,7 +176,7 @@ document.getElementById("formEditRoom").addEventListener("submit", async functio
 
     const roomFacilities = Array.from(document.querySelectorAll("input[name='roomFacilities[]']:checked"))
         .map(opt => opt.value);
-    
+
     const fasilitasTambahan = Array.from(document.querySelectorAll("input[name='fasilitasTambahan[]']:checked"))
         .map(opt => opt.value);
 
