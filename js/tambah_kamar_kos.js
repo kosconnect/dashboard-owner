@@ -1,9 +1,3 @@
-// Fungsi untuk membaca boarding_house_id dari URL
-function getBoardingHouseIdFromURL() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get("boarding_house_id");
-}
-
 // Fungsi untuk mendapatkan JWT token dari cookie
 function getJwtToken() {
     const cookies = document.cookie.split('; ');

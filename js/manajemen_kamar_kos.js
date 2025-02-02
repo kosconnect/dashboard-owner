@@ -135,3 +135,23 @@ window.onload = async () => {
         console.error("Gagal mengambil data:", error);
     }
 };
+
+document.getElementById("btnTambahKamarKos").addEventListener("click", function() {
+    // Ambil boarding_house_id dari URL halaman manajemen_kamar_kos
+    const boardingHouseId = getBoardingHouseIdFromURL();
+    
+    // Cek apakah boarding_house_id ada
+    if (boardingHouseId) {
+        // Arahkan ke halaman tambah kamar kos dengan membawa boarding_house_id di URL
+        const url = `tambah_kamar_kos.html?boarding_house_id=${boardingHouseId}`;
+        window.location.href = url;
+    } else {
+        alert("ID kos tidak ditemukan.");
+    }
+});
+
+// Fungsi untuk membaca boarding_house_id dari URL
+function getBoardingHouseIdFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get("boarding_house_id");
+}
