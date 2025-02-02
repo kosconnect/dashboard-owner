@@ -83,7 +83,7 @@ async function fetchFacilities() {
     fetchData("https://kosconnect-server.vercel.app/api/facility/type?type=room", fasilitasKamarContainer, "facility_id", "name");
 
     // Fetch fasilitas tambahan tanpa owner_id
-    fetchData("https://kosconnect-server.vercel.app/api/customFacilities/admin", fasilitasTambahanContainer, "facility_id", "name");
+    fetchData("https://kosconnect-server.vercel.app/api/customFacilities/owner", fasilitasTambahanContainer, "facility_id", "name");
 }
 
 // Panggil fungsi untuk mengisi fasilitas saat halaman dimuat
