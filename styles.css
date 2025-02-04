@@ -17,6 +17,7 @@ body {
 
 .sidebar {
     width: 180px;
+    height: 100%;
     background: #005f73;
     color: #fff;
     display: flex;

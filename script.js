@@ -8,40 +8,46 @@ document.addEventListener("DOMContentLoaded", () => {
   function getCookie(name) {
     const cookies = document.cookie.split("; ");
     for (let cookie of cookies) {
-      const [key, value] = cookie.split("=");
-      if (key === name) return decodeURIComponent(value);
+      const [key, ...value] = cookie.split("=");
+      if (key === name) return decodeURIComponent(value.join("="));
     }
     return null;
   }
 
+  loadSidebar();
+  loadHeader();
+
   const authToken = getCookie("authToken");
   const userRole = getCookie("userRole");
-  const userNameElement = document.querySelector(".user-dropdown .name");
 
-  if (authToken) {
-    fetch("https://kosconnect-server.vercel.app/api/users/me", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-      },
-    })
-      .then((response) => {
-        if (!response.ok) throw new Error("Failed to fetch user data");
-        return response.json();
+  setTimeout(() => {
+    const userNameElement = document.querySelector(".user-dropdown .name");
+    if (authToken) {
+      fetch("https://kosconnect-server.vercel.app/api/users/me", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
       })
-      .then((data) => {
-        const user = data.user;
-        const userName =
-          user?.fullname || userRole || "Pemilik Kos Tidak Diketahui";
-        userNameElement.textContent = userName;
-      })
-      .catch((error) => {
-        console.error("Error fetching user data:", error);
-        userNameElement.textContent = userRole || "Guest";
-      });
-  } else {
-    userNameElement.textContent = "Guest";
-  }
+        .then((response) => {
+          if (!response.ok) throw new Error("Failed to fetch user data");
+          return response.json();
+        })
+        .then((data) => {
+          const user = data.user;
+          const userName =
+            user?.fullname || userRole || "Pemilik Kos Tidak Diketahui";
+          if (userNameElement) userNameElement.textContent = userName;
+        })
+        .catch((error) => {
+          console.error("Error fetching user data:", error);
+          if (userNameElement)
+            userNameElement.textContent = userRole || "Guest";
+        });
+    } else {
+      if (userNameElement) userNameElement.textContent = "Guest";
+    }
+  }, 300);
 
   const logoutBtn = document.querySelector(".dropdown-menu li a");
   if (logoutBtn) {
@@ -54,9 +60,6 @@ document.addEventListener("DOMContentLoaded", () => {
       window.location.href = "https://kosconnect.github.io/login/";
     });
   }
-
-  loadSidebar();
-  loadHeader();
 });
 
 function loadSidebar() {
@@ -96,7 +99,7 @@ function loadHeader() {
                 <div class="user-dropdown">
                     <div class="user-info" onclick="toggleDropdown()">
                         <div class="top-row">
-                            <span class="name"></span>
+                            <span class="name">Loading...</span>
                             <i class="fas fa-user"></i>
                             <i class="fas fa-caret-down"></i>
                         </div>
