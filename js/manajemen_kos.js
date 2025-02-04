@@ -43,8 +43,8 @@ async function renderBoardingHouseTable(boardingHouses) {
           ? detail[0]?.category_name
           : "Kategori Tidak Diketahui";
       const facilityList =
-        detail.length > 0 && detail[0]?.facility_id
-          ? detail[0].facility_id
+        detail.length > 0 && detail[0]?.facilities
+          ? detail[0].facilities
           : [];
 
       // Buat tampilan semua gambar
@@ -67,8 +67,10 @@ async function renderBoardingHouseTable(boardingHouses) {
       container.innerHTML += `
         <div class="card">
           <div class="card-header">
+          <div class="card-title">
             <h3>${name}</h3>
             <p class="kategori">Kategori: ${categoryName}</p> 
+            </div>
             <p class="alamat"><i class="fa-solid fa-location-dot"></i> ${address}</p> 
           </div>
 

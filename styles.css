@@ -498,7 +498,8 @@ tbody tr:hover {
 }
 
 .card-header {
-    display: flex;
+    display: block;
+    flex: 1;
     /* Align image and title horizontally */
     align-items: flex-start;
     /* Vertically center image and title */
@@ -514,8 +515,12 @@ tbody tr:hover {
 }
 
 .card-header {
+    gap: 10px;
+}
+
+.card-title {
     display: flex;
-    flex: 1;
+    
     justify-content: space-around;
     /* Allow title to take up available space */
 }
@@ -539,6 +544,9 @@ tbody tr:hover {
 .card-content div {
     gap: 10px;
     background-color: #ffffff;
+    background-color: #ffffff;
+        padding: 10px;
+        border-radius: 10px;
 }
 
 .card-button {
@@ -547,6 +555,7 @@ tbody tr:hover {
     /* Distribute buttons evenly */
     padding: 10px;
     /* Add a separator line */
+    border-top: #003f53 solid 5px;
 }
 
 .card .header .name {
