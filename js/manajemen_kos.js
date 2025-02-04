@@ -27,7 +27,6 @@ async function renderBoardingHouseTable(boardingHouses) {
     return;
   }
 
-  // Ambil detail untuk setiap boarding house
   for (let boardingHouse of boardingHouses) {
     const { boarding_house_id, images, name, address, description, rules } =
       boardingHouse;
@@ -38,32 +37,65 @@ async function renderBoardingHouseTable(boardingHouses) {
       );
       const detail = await detailResponse.json();
 
-      // Pastikan detail[0] ada sebelum mengakses propertinya
+      // Pastikan detail[0] tersedia sebelum mengakses properti
       const categoryName =
         detail.length > 0
           ? detail[0]?.category_name
           : "Kategori Tidak Diketahui";
+      const facilityList =
+        detail.length > 0 && detail[0]?.facility_id
+          ? detail[0].facility_id
+          : [];
 
       // Buat tampilan semua gambar
-      const imageGallery = images
-        .map((img) => `<img src="${img}" alt="Kos Image" class="card-image">`)
-        .join("");
+      const imageGallery =
+        images && images.length > 0
+          ? images
+              .map(
+                (img) => `<img src="${img}" alt="Kos Image" class="card-image">`
+              )
+              .join("")
+          : `<p>Tidak ada gambar tersedia</p>`;
+
+      // Buat tampilan fasilitas umum kos
+      const facilityDisplay =
+        facilityList.length > 0
+          ? facilityList.map((facility) => `<li>${facility}</li>`).join("")
+          : `<p>Tidak ada fasilitas tersedia</p>`;
 
       // Membuat card untuk setiap boarding house
       container.innerHTML += `
         <div class="card">
-            <div class="image-gallery">${imageGallery}</div>
-            <div class="card-content">
-                <h3>${name}</h3>
-                <dl>
-                    <dt>Alamat:</dt><dd>${address}</dd>
-                    <dt>Deskripsi:</dt><dd>${description}</dd>
-                    <dt>Aturan:</dt><dd>${rules}</dd>
-                </dl>
-                <h3>Aksi</h3>
-                <button class="btn btn-lihat" onclick="redirectToRoomManagement('${boarding_house_id}')">Lihat Kamar Kos</button>
-                <button class="btn btn-edit" onclick="location.href='edit_kos.html?boarding_house_id=${boarding_house_id}'">Edit</button>
-                <button class="btn btn-delete" onclick="deleteBoardingHouse('${boarding_house_id}')">Hapus</button>
+          <div class="card-header">
+            <h3>${name}</h3>
+            <p class="kategori">Kategori: ${categoryName}</p> 
+            <p class="alamat"><i class="fa-solid fa-location-dot"></i> ${address}</p> 
+          </div>
+
+          <div class="card-content">
+          <div>
+                <p><strong>Aturan:</strong></p>
+                <p>${rules}</p>
+              </div>
+              <div>
+                <p><strong>Deskripsi:</strong></p>
+                <p>${description}</p>
+              </div>
+              <div>
+                <p><strong>Fasilitas Umum Kos:</strong></p>
+                <ul>${facilityDisplay}</ul>
+              </div>
+          </div>
+
+          <div class="card-gallery">
+            <p><strong>Gambar Kos:</strong></p>
+            ${imageGallery}
+          </div>
+          <div class="card-button">
+              <p><strong>Aksi</strong></p>
+              <button class="btn btn-lihat" onclick="redirectToRoomManagement('${boarding_house_id}')">Lihat Kamar Kos</button>
+              <button class="btn btn-edit" onclick="location.href='edit_kos.html?boarding_house_id=${boarding_house_id}'">Edit</button>
+              <button class="btn btn-delete" onclick="deleteBoardingHouse('${boarding_house_id}')">Hapus</button>
             </div>
         </div>
       `;

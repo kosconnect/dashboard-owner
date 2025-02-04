@@ -88,10 +88,12 @@ async function renderRoomTable(rooms) {
                     <p>Fasilitas: ${roomFacilities}</p>
                     <p>Fasilitas Custom: ${customFacilities}</p>
 
+                    <div class="action">
                     <h3>Aksi</h3>
                     <button class="btn btn-primary" onclick="location.href='edit_kamar_kos.html?room_id=${room_id}'">Edit</button>
                     <button class="btn btn-primary" onclick="deleteRoom('${room_id}')">Hapus</button>
                     <button class="btn btn-primary" onclick="window.location.href='manajemen_kos.html'"><i class="fas fa-arrow-left"></i> Kembali</button>
+                    </div>
                 </div>
             </div>
             `;
