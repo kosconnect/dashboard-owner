@@ -17,72 +17,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="css/invoice.css">
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"
-        integrity="sha512-yFjZbTYRCJodnuyGlsKamNE/LlEaEAxSUDe5+u61mV8zzqJVFOH7TnULE2/PP/l5vKWpUNnF4VGVkXh3MjgLsg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
-
-    <style>
-        #user-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 20px;
-        }
-
-        #user-photo {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: #ccc;
-            /* Placeholder jika foto tidak ada */
-        }
-
-        #user-name,
-        #user-phone {
-            font-size: 1rem;
-            font-weight: bold;
-        }
-    </style>
-</head>
 
 <body>
     <div class="container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <!-- Ganti dengan gambar -->
-                <img src="img/logokos.png" alt="Kosconnect Logo" style="width: 40px; height: 40px; margin-right: 10px;">
-                <h2>KosConnect</h2>
-            </div>
-            <ul>
-                <li><a href="index.html"><i class="fas fa-tachometer-alt"></i> <span>Beranda</span></a></li>
-                <li>
-                    <h2 style="font-size: 14px; color: #b0bec5;">Manajemen Data Kos</h2>
-                    <ul style="list-style: none; padding-left: 20px; margin: 10px 0;">
-                        <li>
-                            <a href="manajemen_kos.html">
-                                <i class="fas fa-house-user"></i> <span>Manajemen Kos</span>
-                            </a>
-                            <!-- <ul id="manajemenKosDropdown"
-                                style="list-style: none; padding-left: 20px; margin-top: 10px;">
-                                <li>
-                                    <a href="manajemen_kamar_kos.html">
-                                        <i class="fa-solid fa-door-open"></i> <span>Manajemen Kamar Kos</span>
-                                    </a>
-                                </li>
-                            </ul> -->
-                        </li>
-                        <li><a href="custom_facility.html"><i class="fas fa-bed"></i> <span>Custom Facility</span></a>
-                        </li>
-                        <!-- <li><a href="feedback.html"><i class="fas fa-comments"></i> <span>Feedback / Review</span></a> -->
-                        </li>
-                        <li><a href="transaksi.html"><i class="fas fa-wallet"></i> <span>Transaksi</span></a></li>
-                        <!-- <li><a href="history.html"><i class="fas fa-history"></i> <span>History Pesanan</span></a></li> -->
-                    </ul>
-                </li>
-            </ul>
-        </div>
-
+        <div id="sidebar-container"></div>
             <!-- Main Content -->
             <div class="main-content">
                 <div class="dashboard-header">

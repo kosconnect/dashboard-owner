@@ -21,65 +21,10 @@
 
 <body>
     <div class="container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <!-- Ganti dengan gambar -->
-                <img src="img/logokos.png" alt="Kosconnect Logo" style="width: 40px; height: 40px; margin-right: 10px;">
-                <h2>KosConnect</h2>
-            </div>
-            <ul>
-                <li><a href="index.html"><i class="fas fa-tachometer-alt"></i> <span>Beranda</span></a></li>
-                <li>
-                    <h2 style="font-size: 14px; color: #b0bec5;">Manajemen Data Kos</h2>
-                    <ul style="list-style: none; padding-left: 20px; margin: 10px 0;">
-                        <li>
-                            <a href="manajemen_kos.html">
-                                <i class="fas fa-house-user"></i> <span>Manajemen Kos</span>
-                            </a>
-                            <!-- <ul id="manajemenKosDropdown"
-                                style="list-style: none; padding-left: 20px; margin-top: 10px;">
-                                <li>
-                                    <a href="manajemen_kamar_kos.html">
-                                        <i class="fa-solid fa-door-open"></i> <span>Manajemen Kamar Kos</span>
-                                    </a>
-                                </li>
-                            </ul> -->
-                        </li>
-                        <li><a href="custom_facility.html"><i class="fas fa-bed"></i> <span>Custom Facility</span></a>
-                        </li>
-                        <!-- <li><a href="feedback.html"><i class="fas fa-comments"></i> <span>Feedback / Review</span></a> -->
-                        </li>
-                        <li><a href="transaksi.html"><i class="fas fa-wallet"></i> <span>Transaksi</span></a></li>
-                        <!-- <li><a href="history.html"><i class="fas fa-history"></i> <span>History Pesanan</span></a></li> -->
-                    </ul>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Main Content -->
-        <div class="main-content">
-            <div class="dashboard-header">
-                <h1>Kamar Kos</h1>
-                <div class="header-icons">
-                    <a href="#"><i class="fas fa-bell"></i></a>
-                    <a href="#"><i class="fas fa-cog"></i></a>
-                    <div class="user-dropdown">
-                        <div class="user-info" onclick="toggleDropdown()">
-                            <div class="top-row">
-                                <span class="name"></span> <!-- Nama pengguna akan ditambahkan secara dinamis -->
-                                <i class="fas fa-user"></i>
-                                <i class="fas fa-caret-down"></i>
-                            </div>
-                            <span class="role">Pemilik Kos</span> <!-- Peran user akan ditambahkan secara dinamis -->
-                        </div>
-                    </div>
-                    <ul class="dropdown-menu">
-                        <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                    </ul>
-                </div>
-            </div>
-
+     <div id="sidebar-container"></div>
+      <!-- Main Content -->
+      <div class="main-content">
+        <div id="header-container"></div>
             <!-- Pesanan Table -->
             <div class="main-container">
                 <div class="header">
