@@ -27,7 +27,9 @@ async function renderRoomTable(rooms) {
   container.innerHTML = "";
 
   if (!rooms || rooms.length === 0) {
-    const userChoice = confirm("Belum ada kamar kos yang tersedia. Tambahkan kamar sekarang?");
+    const userChoice = confirm(
+      "Belum ada kamar kos yang tersedia. Tambahkan kamar sekarang?"
+    );
     if (userChoice) {
       location.href = "tambah_kamar_kos.html"; // Klik OK
     } else {
@@ -53,13 +55,16 @@ async function renderRoomTable(rooms) {
     const room_facilities = roomDetail[0]?.room_facilities || [];
     const custom_facility_details =
       roomDetail[0]?.custom_facility_details || [];
-    
+
     // Memastikan gambar kamar adalah array
-    const imageGallery = room.images && Array.isArray(room.images) && room.images.length > 0
-      ? room.images.map(
-          (img) => `<img src="${img}" alt="Room Image" class="card-image">`
-        ).join("") // Join untuk merender semua gambar dalam array
-      : `<p>Tidak ada gambar tersedia</p>`;
+    const imageGallery =
+      room.images && Array.isArray(room.images) && room.images.length > 0
+        ? room.images
+            .map(
+              (img) => `<img src="${img}" alt="Room Image" class="card-image">`
+            )
+            .join("") // Join untuk merender semua gambar dalam array
+        : `<p>Tidak ada gambar tersedia</p>`;
 
     const roomFacilityDisplay =
       room_facilities.length > 0
@@ -94,17 +99,23 @@ async function renderRoomTable(rooms) {
       <div class="card">
         <div class="card-header"><h3>${room_type}</h3></div>
         <div class="card-content">
+        <div class="left">
           <p><strong>Ukuran:</strong> ${size} m²</p>
           ${priceDisplay}
           <p><strong>Kamar Tersedia:</strong> ${number_available}</p>
           <p><strong>Status:</strong> ${status}</p>
+          </div>
+          <div class="center">
           <p><strong>Fasilitas Kamar:</strong></p>
           <div class="facility-list">
           <ul>${roomFacilityDisplay}</ul>
           </div>
+          </div>
+          <div class="right">
           <p><strong>Fasilitas Custom:</strong></p>
           <div class="facility-list">
           <ul>${customFacilityDisplay}</ul>
+          </div>
           </div>
         </div>
         <div class="card-gallery">
@@ -179,8 +190,11 @@ async function reloadRoomData() {
         }
       );
       const roomDetailData = await roomDetail.json();
-      const boardingHouseName = roomDetailData[0]?.boarding_house_name || "Boarding House";
-      document.getElementById("header").innerHTML = `<h1>Manajemen Kamar - ${boardingHouseName}</h1>`;
+      const boardingHouseName =
+        roomDetailData[0]?.boarding_house_name || "Boarding House";
+      document.getElementById(
+        "header"
+      ).innerHTML = `<h1>Daftar Kamar Kos - ${boardingHouseName}</h1>`;
     }
 
     await renderRoomTable(allRoomData);
