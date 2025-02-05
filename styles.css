@@ -489,7 +489,6 @@ tbody tr:hover {
     /* Add a hover effect */
     width: 100%;
     max-height: fit-content;
-    gap: 15px;
 }
 
 .card:hover {
@@ -534,10 +533,10 @@ tbody tr:hover {
     display: flex;
     padding: 10px;
     flex: 1;
+    gap: 10px
 }
 
 .card-content div {
-    gap: 10px;
     background-color: #ffffff;
     padding: 10px;
     border-radius: 10px;
