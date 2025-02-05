@@ -206,7 +206,9 @@ async function reloadRoomData() {
       document.getElementById("header").innerHTML = `
         <div class="header-container">
           <h1>Daftar Kamar Kos - ${boardingHouseName}</h1>
-          <button id="btnBack" class="btnBack">Back</button>
+          <button class="btnBack" id="btnBack">
+            <i class="fa-solid fa-arrow-left"></i> Kembali
+          </button>
         </div>
       `;
     }
