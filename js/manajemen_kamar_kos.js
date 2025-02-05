@@ -39,7 +39,15 @@ async function renderRoomTable(rooms) {
   }
 
   for (let room of rooms) {
-    const { room_id, room_type, size, price, number_available, status } = room;
+    const {
+      room_id,
+      room_type,
+      size,
+      price,
+      number_available,
+      status,
+      images,
+    } = room;
 
     // Ambil detail kamar untuk mendapatkan fasilitas dan boarding house name
     const authToken = getCookie("authToken");
@@ -58,12 +66,12 @@ async function renderRoomTable(rooms) {
 
     // Memastikan gambar kamar adalah array
     const imageGallery =
-      room.images && Array.isArray(room.images) && room.images.length > 0
-        ? room.images
+      images && Array.isArray(images) && images.length > 0
+        ? images
             .map(
               (img) => `<img src="${img}" alt="Room Image" class="card-image">`
             )
-            .join("") // Join untuk merender semua gambar dalam array
+            .join("")
         : `<p>Tidak ada gambar tersedia</p>`;
 
     const roomFacilityDisplay =
@@ -99,23 +107,23 @@ async function renderRoomTable(rooms) {
       <div class="card">
         <div class="card-header"><h3>${room_type}</h3></div>
         <div class="card-content">
-        <div class="left">
-          <p><strong>Ukuran:</strong> ${size} m²</p>
-          ${priceDisplay}
-          <p><strong>Kamar Tersedia:</strong> ${number_available}</p>
-          <p><strong>Status:</strong> ${status}</p>
+          <div class="left">
+            <p><strong>Ukuran:</strong> ${size} m²</p>
+            ${priceDisplay}
+            <p><strong>Kamar Tersedia:</strong> ${number_available}</p>
+            <p><strong>Status:</strong> ${status}</p>
           </div>
           <div class="center">
-          <p><strong>Fasilitas Kamar:</strong></p>
-          <div class="facility-list">
-          <ul>${roomFacilityDisplay}</ul>
-          </div>
+            <p><strong>Fasilitas Kamar:</strong></p>
+            <div class="facility-list">
+              <ul>${roomFacilityDisplay}</ul>
+            </div>
           </div>
           <div class="right">
-          <p><strong>Fasilitas Custom:</strong></p>
-          <div class="facility-list">
-          <ul>${customFacilityDisplay}</ul>
-          </div>
+            <p><strong>Fasilitas Custom:</strong></p>
+            <div class="facility-list">
+              <ul>${customFacilityDisplay}</ul>
+            </div>
           </div>
         </div>
         <div class="card-gallery">
@@ -192,9 +200,13 @@ async function reloadRoomData() {
       const roomDetailData = await roomDetail.json();
       const boardingHouseName =
         roomDetailData[0]?.boarding_house_name || "Boarding House";
-      document.getElementById(
-        "header"
-      ).innerHTML = `<h1>Daftar Kamar Kos - ${boardingHouseName}</h1>`;
+
+      document.getElementById("header").innerHTML = `
+        <div class="header-container">
+          <h1>Daftar Kamar Kos - ${boardingHouseName}</h1>
+          <button id="btnBack" class="btn btn-secondary">Back</button>
+        </div>
+      `;
     }
 
     await renderRoomTable(allRoomData);
@@ -202,6 +214,18 @@ async function reloadRoomData() {
     console.error("Gagal mengambil data:", error);
   }
 }
+
+// Tambahkan event listener untuk tombol "Tambah Kamar Kos"
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("btnTambahKamarKos").addEventListener("click", () => {
+    location.href = "tambah_kamar_kos.html";
+  });
+
+  // Event listener untuk tombol "Back"
+  document.getElementById("btnBack").addEventListener("click", () => {
+    location.href = "manajemen_kos.html";
+  });
+});
 
 // Ambil data saat halaman dimuat
 window.onload = reloadRoomData;
