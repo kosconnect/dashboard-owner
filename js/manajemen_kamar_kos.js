@@ -21,46 +21,25 @@ const priceTypes = {
   yearly: "tahun",
 };
 
-// Fungsi untuk memperbarui header dengan nama boarding house
-async function updateHeader(boardingHouseId) {
-  try {
-    const authToken = getCookie("authToken");
-    const response = await fetch(
-      `https://kosconnect-server.vercel.app/api/boarding-house/${boardingHouseId}`,
-      {
-        method: "GET",
-        headers: { Authorization: `Bearer ${authToken}` },
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("Gagal mengambil data boarding house");
-    }
-
-    const data = await response.json();
-    document.getElementById(
-      "header"
-    ).innerHTML = `<h1>Manajemen Kamar - ${data.boarding_house_name}</h1>`;
-  } catch (error) {
-    console.error("Gagal memperbarui header:", error);
-  }
-}
-
 // Fungsi untuk merender tabel kamar kos
 async function renderRoomTable(rooms) {
   const container = document.querySelector(".cards-container");
   container.innerHTML = "";
 
   if (!rooms || rooms.length === 0) {
-    alert("Belum ada kamar kos yang tersedia. Tambahkan kamar sekarang.");
-    location.href = "tambah_kamar_kos.html";
+    const userChoice = confirm("Belum ada kamar kos yang tersedia. Tambahkan kamar sekarang?");
+    if (userChoice) {
+      location.href = "tambah_kamar_kos.html"; // Klik OK
+    } else {
+      location.href = "manajemen_kos.html"; // Klik Batal
+    }
     return;
   }
 
   for (let room of rooms) {
     const { room_id, room_type, size, price, number_available, status } = room;
 
-    // Ambil detail kamar untuk mendapatkan fasilitas
+    // Ambil detail kamar untuk mendapatkan fasilitas dan boarding house name
     const authToken = getCookie("authToken");
     const response = await fetch(
       `https://kosconnect-server.vercel.app/api/rooms/${room_id}/detail`,
@@ -74,16 +53,13 @@ async function renderRoomTable(rooms) {
     const room_facilities = roomDetail[0]?.room_facilities || [];
     const custom_facility_details =
       roomDetail[0]?.custom_facility_details || [];
-    const images = roomDetail[0]?.images || [];
-
-    const imageGallery =
-      images.length > 0
-        ? images
-            .map(
-              (img) => `<img src="${img}" alt="Room Image" class="card-image">`
-            )
-            .join("")
-        : `<p>Tidak ada gambar tersedia</p>`;
+    
+    // Memastikan gambar kamar adalah array
+    const imageGallery = room.images && Array.isArray(room.images) && room.images.length > 0
+      ? room.images.map(
+          (img) => `<img src="${img}" alt="Room Image" class="card-image">`
+        ).join("") // Join untuk merender semua gambar dalam array
+      : `<p>Tidak ada gambar tersedia</p>`;
 
     const roomFacilityDisplay =
       room_facilities.length > 0
@@ -177,8 +153,7 @@ async function reloadRoomData() {
     const urlParams = new URLSearchParams(window.location.search);
     const boardingHouseId = urlParams.get("boarding_house_id");
 
-    updateHeader(boardingHouseId);
-
+    // Ambil data kamar kos dan gambar kamar
     const response = await fetch(
       `https://kosconnect-server.vercel.app/api/rooms/boarding-house/${boardingHouseId}`,
       {
@@ -193,6 +168,21 @@ async function reloadRoomData() {
 
     const data = await response.json();
     allRoomData = data.data || [];
+
+    // Update header dengan boarding house name dari room pertama
+    if (allRoomData.length > 0) {
+      const roomDetail = await fetch(
+        `https://kosconnect-server.vercel.app/api/rooms/${allRoomData[0].room_id}/detail`,
+        {
+          method: "GET",
+          headers: { Authorization: `Bearer ${authToken}` },
+        }
+      );
+      const roomDetailData = await roomDetail.json();
+      const boardingHouseName = roomDetailData[0]?.boarding_house_name || "Boarding House";
+      document.getElementById("header").innerHTML = `<h1>Manajemen Kamar - ${boardingHouseName}</h1>`;
+    }
+
     await renderRoomTable(allRoomData);
   } catch (error) {
     console.error("Gagal mengambil data:", error);
