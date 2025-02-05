@@ -227,3 +227,18 @@ document.getElementById("formEditRoom").addEventListener("submit", async functio
         alert("Terjadi kesalahan saat memperbarui kamar.");
     }
 });
+
+// Tombol Batal
+  const btnBatal = document.getElementById("btnBatal");
+  if (btnBatal) {
+    btnBatal.addEventListener("click", () => {
+      location.href = `manajemen_kamar_kos.html?boarding_house_id=${boardingHouseId}`;
+    });
+  }
+
+  // Tombol Back (jika ada)
+  document.addEventListener("click", (event) => {
+    if (event.target.id === "btnBack") {
+      location.href = "manajemen_kos.html";
+    }
+  });
