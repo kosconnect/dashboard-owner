@@ -21,39 +21,39 @@ function getBoardingHouseIdFromURL() {
 }
 // Fungsi untuk fetch boarding house berdasarkan ID
 async function fetchBoardingHouse() {
-  const boardingHouseId = getBoardingHouseIdFromURL();
-  if (!boardingHouseId) {
-    console.error("Boarding House ID tidak ditemukan di URL.");
-    return;
-  }
+    const boardingHouseId = getBoardingHouseIdFromURL();
+    if (!boardingHouseId) {
+        console.error("Boarding House ID tidak ditemukan di URL.");
+        return;
+    }
+    
+    if (!token) {
+        console.error("Tidak ada token JWT, tidak dapat melanjutkan permintaan.");
+        return;
+    }
 
-  if (!token) {
-    console.error("Tidak ada token JWT, tidak dapat melanjutkan permintaan.");
-    return;
-  }
+    try {
+        const response = await fetch(`https://kosconnect-server.vercel.app/api/boardingHouses/${boardingHouseId}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+        
+        if (!response.ok) throw new Error("Gagal mengambil data boarding house");
+        
+        const data = await response.json();
+        if (!data.boardingHouse || !data.boardingHouse.name) {
+            throw new Error("Data boarding house tidak memiliki properti 'name'");
+        }
 
-  try {
-    const response = await fetch(
-      `https://kosconnect-server.vercel.app/api/boardingHouses/${boardingHouseId}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    if (!response.ok) throw new Error("Gagal mengambil data boarding house");
-
-    const data = await response.json();
-    document.getElementById(
-      "header"
-    ).innerHTML = `<h2>Form Tambah Kamar Kos - ${data.name}</h2>`;
-  } catch (error) {
-    console.error("Error:", error);
-  }
+        document.getElementById("header").innerHTML = `<h2>Form Tambah Kamar Kos - ${data.boardingHouse.name}</h2>`;
+    } catch (error) {
+        console.error("Error:", error);
+    }
 }
+
 // Panggil fetchBoardingHouse saat halaman dimuat
 document.addEventListener("DOMContentLoaded", fetchBoardingHouse);
 
