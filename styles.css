@@ -540,10 +540,6 @@ tbody tr:hover {
     border-radius: 10px;
 }
 
-.left,
-.center {
-    max-width: 300px;
-}
 
 .facility-list {
     display: flex;

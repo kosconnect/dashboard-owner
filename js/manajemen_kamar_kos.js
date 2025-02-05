@@ -123,9 +123,13 @@ async function renderRoomTable(rooms) {
           <p><strong>Kamar Tersedia:</strong> ${number_available}</p>
           <p><strong>Status:</strong> ${status}</p>
           <p><strong>Fasilitas Kamar:</strong></p>
+          <div class="facility-list">
           <ul>${roomFacilityDisplay}</ul>
+          </div>
           <p><strong>Fasilitas Custom:</strong></p>
+          <div class="facility-list">
           <ul>${customFacilityDisplay}</ul>
+          </div>
         </div>
         <div class="card-gallery">
           <p><strong>Gambar Kamar:</strong></p>
