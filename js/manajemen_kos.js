@@ -75,15 +75,15 @@ async function renderBoardingHouseTable(boardingHouses) {
           </div>
 
           <div class="card-content">
-          <div>
+          <div class="left">
                 <p><strong>Aturan:</strong></p>
                 <p>${rules}</p>
               </div>
-              <div>
+              <div class="center">
                 <p><strong>Deskripsi:</strong></p>
                 <p>${description}</p>
               </div>
-              <div>
+              <div class="right">
                 <p><strong>Fasilitas Umum Kos:</strong></p>
                 <ul>${facilityDisplay}</ul>
               </div>

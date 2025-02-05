@@ -498,10 +498,6 @@ tbody tr:hover {
 }
 
 .card-header {
-    display: block;
-    flex: 1;
-    /* Align image and title horizontally */
-    align-items: flex-start;
     /* Vertically center image and title */
     padding: 10px;
 }
@@ -520,7 +516,6 @@ tbody tr:hover {
 
 .card-title {
     display: flex;
-    
     justify-content: space-around;
     /* Allow title to take up available space */
 }
@@ -533,10 +528,10 @@ tbody tr:hover {
 .card-header p {
     font-family: 'Merriweather Sans', serif;
     color: #1b3446;
-    border-left: #003f53 solid 5px;
 }
 
 .card-content {
+    display: flex;
     padding: 10px;
     flex: 1;
 }
@@ -544,9 +539,13 @@ tbody tr:hover {
 .card-content div {
     gap: 10px;
     background-color: #ffffff;
-    background-color: #ffffff;
-        padding: 10px;
-        border-radius: 10px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.left,
+.center {
+    max-width: 300px;
 }
 
 .card-button {
@@ -774,17 +773,19 @@ textarea {
     cursor: pointer;
     transition: background-color 0.2s ease, color 0.2s ease;
 }
+
 .btn-add,
-.btn-lihat{
+.btn-lihat {
     /* Memperkecil ukuran tombol */
-        background-color: #005f73;
-        color: white;
+    background-color: #005f73;
+    color: white;
 }
 
 .btn-delete {
     background-color: #dc3545;
     color: #f1f1f1;
 }
+
 .btn-delete:hover {
     background-color: #c12a36;
     color: white;
