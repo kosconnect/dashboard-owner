@@ -31,9 +31,11 @@ async function renderRoomTable(rooms) {
       "Belum ada kamar kos yang tersedia. Tambahkan kamar sekarang?"
     );
     if (userChoice) {
-      location.href = "tambah_kamar_kos.html"; // Klik OK
+      const urlParams = new URLSearchParams(window.location.search);
+      const boardingHouseId = urlParams.get("boarding_house_id");
+      location.href = `tambah_kamar_kos.html?boarding_house_id=${boardingHouseId}`;
     } else {
-      location.href = "manajemen_kos.html"; // Klik Batal
+      location.href = "manajemen_kos.html";
     }
     return;
   }
@@ -215,15 +217,22 @@ async function reloadRoomData() {
   }
 }
 
-// Tambahkan event listener untuk tombol "Tambah Kamar Kos"
+// Event listener untuk tombol "Tambah Kamar Kos"
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("btnTambahKamarKos").addEventListener("click", () => {
-    location.href = "tambah_kamar_kos.html";
-  });
+  const urlParams = new URLSearchParams(window.location.search);
+  const boardingHouseId = urlParams.get("boarding_house_id");
 
-  // Event listener untuk tombol "Back"
-  document.getElementById("btnBack").addEventListener("click", () => {
-    location.href = "manajemen_kos.html";
+  const btnTambah = document.getElementById("btnTambahKamarKos");
+  if (btnTambah) {
+    btnTambah.addEventListener("click", () => {
+      location.href = `tambah_kamar_kos.html?boarding_house_id=${boardingHouseId}`;
+    });
+  }
+
+  document.addEventListener("click", (event) => {
+    if (event.target.id === "btnBack") {
+      location.href = "manajemen_kos.html";
+    }
   });
 });
 
