@@ -1,17 +1,41 @@
-// Fungsi untuk membaca nilai cookie berdasarkan nama
-function getCookie(name) {
-  const cookies = document.cookie.split("; ");
-  for (let cookie of cookies) {
-    const [key, value] = cookie.split("=");
-    if (key === name) {
-      return decodeURIComponent(value);
-    }
-  }
-  return null;
-}
-
+import { getCookie } from "./utils.js";
 // Variabel global untuk menyimpan semua data kamar kos
 let allRoomData = [];
+
+// Konversi harga berdasarkan jenis sewa
+const priceTypes = {
+  monthly: "bulan",
+  quarterly: "3 bulan",
+  semi_annual: "6 bulan",
+  yearly: "tahun",
+};
+
+// Fungsi untuk memperbarui header dengan nama boarding house
+async function updateHeader(boardingHouseId) {
+  try {
+    const authToken = getCookie("authToken");
+    const response = await fetch(
+      `https://kosconnect-server.vercel.app/api/rooms/${boardingHouseId}/detail`,
+      {
+        method: "GET",
+        headers: { Authorization: `Bearer ${authToken}` },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Gagal mengambil data boarding house");
+    }
+
+    const data = await response.json();
+    if (data && data[0] && data[0].boarding_house_name) {
+      document.getElementById(
+        "header"
+      ).innerHTML = `<h1>Manajemen Kamar - ${data[0].boarding_house_name}</h1>`;
+    }
+  } catch (error) {
+    console.error("Gagal memperbarui header:", error);
+  }
+}
 
 // Fungsi untuk merender tabel kamar kos
 async function renderRoomTable(rooms) {
@@ -19,11 +43,14 @@ async function renderRoomTable(rooms) {
   container.innerHTML = ""; // Menghapus konten sebelumnya
 
   if (!rooms || rooms.length === 0) {
-    container.innerHTML = `
-        <div class="card">
-            <p>Tidak ada kamar kos yang ditemukan.</p>
-        </div>
-      `;
+    const confirmAddRoom = confirm(
+      "Belum ada kamar kos yang tersedia. Tambahkan kamar sekarang?"
+    );
+    if (confirmAddRoom) {
+      location.href = "tambah_kamar_kos.html";
+    } else {
+      location.href = "manajemen_kos.html";
+    }
     return;
   }
 
@@ -36,8 +63,8 @@ async function renderRoomTable(rooms) {
       price,
       number_available,
       status,
-      roomFacilities,
-      customFacilities,
+      room_facilities = [],
+      custom_facility_details = [],
     } = room;
 
     // Buat tampilan semua gambar
@@ -52,15 +79,35 @@ async function renderRoomTable(rooms) {
 
     // Buat tampilan fasilitas umum kamar
     const roomFacilityDisplay =
-      roomFacilities.length > 0
-        ? roomFacilities.map((facility) => `<li>${facility}</li>`).join("")
+      room_facilities.length > 0
+        ? room_facilities.map((facility) => `<li>${facility}</li>`).join("")
         : `<p>Tidak ada fasilitas tersedia</p>`;
 
     // Buat tampilan fasilitas custom kamar
     const customFacilityDisplay =
-      customFacilities.length > 0
-        ? customFacilities.map((facility) => `<li>${facility}</li>`).join("")
+      custom_facility_details.length > 0
+        ? custom_facility_details
+            .map(
+              (facility) =>
+                `<li>${facility.name} - Rp ${facility.price.toLocaleString(
+                  "id-ID"
+                )}</li>`
+            )
+            .join("")
         : `<p>Tidak ada fasilitas custom tersedia</p>`;
+
+    // Buat tampilan harga berdasarkan periode
+    let priceDisplay = "<p><strong>Harga:</strong></p><ul>";
+    if (price && typeof price === "object") {
+      Object.entries(priceTypes).forEach(([key, label]) => {
+        if (price[key]) {
+          priceDisplay += `<li>Rp ${price[key].toLocaleString(
+            "id-ID"
+          )} / ${label}</li>`;
+        }
+      });
+    }
+    priceDisplay += "</ul>";
 
     // Membuat card untuk setiap kamar kos
     container.innerHTML += `
@@ -74,7 +121,8 @@ async function renderRoomTable(rooms) {
         <div class="card-content">
           <div class="left">
             <p><strong>Ukuran:</strong> ${size} m²</p>
-            <p><strong>Harga:</strong> Rp ${price.toLocaleString()}</p>
+            <p><strong>Harga Sewa:</strong></p>
+            ${priceDisplay}
             <p><strong>Kamar Tersedia:</strong> ${number_available}</p>
             <p><strong>Status:</strong> ${status}</p>
           </div>
@@ -109,6 +157,9 @@ async function reloadRoomData() {
     const urlParams = new URLSearchParams(window.location.search);
     const boardingHouseId = urlParams.get("boarding_house_id");
 
+    // Perbarui header dengan nama boarding house
+    updateHeader(boardingHouseId);
+
     const response = await fetch(
       `https://kosconnect-server.vercel.app/api/rooms/boarding-house/${boardingHouseId}`,
       {
@@ -135,33 +186,3 @@ async function reloadRoomData() {
 
 // Ambil data saat halaman dimuat
 window.onload = reloadRoomData;
-
-// Fungsi untuk menghapus kamar kos
-async function deleteRoom(roomId) {
-  const confirmDelete = confirm("Apakah Anda yakin ingin menghapus kamar ini?");
-  if (!confirmDelete) return;
-
-  try {
-    const authToken = getCookie("authToken");
-    const response = await fetch(
-      `https://kosconnect-server.vercel.app/api/rooms/${roomId}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`,
-        },
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("Gagal menghapus kamar");
-    }
-
-    alert("Kamar berhasil dihapus!");
-    reloadRoomData(); // Memuat ulang data tanpa refresh halaman
-  } catch (error) {
-    console.error("Error:", error);
-    alert("Terjadi kesalahan saat menghapus kamar.");
-  }
-}

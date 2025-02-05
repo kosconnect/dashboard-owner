@@ -1,19 +1,16 @@
+import { getCookie } from "./utils.js"; // Import getCookie dari utils.js
+
 function toggleDropdown() {
   const dropdown = document.querySelector(".dropdown-menu");
   dropdown.style.display =
     dropdown.style.display === "block" ? "none" : "block";
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  function getCookie(name) {
-    const cookies = document.cookie.split("; ");
-    for (let cookie of cookies) {
-      const [key, ...value] = cookie.split("=");
-      if (key === name) return decodeURIComponent(value.join("="));
-    }
-    return null;
-  }
+// Buat function ini bisa diakses dari HTML
+window.toggleDropdown = toggleDropdown;
 
+
+document.addEventListener("DOMContentLoaded", () => {
   loadSidebar();
   loadHeader();
 
@@ -98,10 +95,20 @@ function loadHeader() {
     pageTitle = "Manajemen Kamar Kos";
   } else if (path.includes("manajemen_kos")) {
     pageTitle = "Manajemen Kos";
+  } else if (path.includes("custom_facility")) {
+    pageTitle = "Manajemen Fasilitas Custom";
+  } else if (path.includes("transaksi")) {
+    pageTitle = "Manajemen Transaksi";
+  } else if (path.includes("invoice")) {
+    pageTitle = "Detail Transaksi";
   } else if (path.includes("edit_kos")) {
     pageTitle = "Edit Kos";
-  } else if (path.includes("edit_kamar")) {
+  } else if (path.includes("tambah_kos")) {
+    pageTitle = "Tambah Kos";
+  } else if (path.includes("edit_kamar_kos")) {
     pageTitle = "Edit Kamar Kos";
+  } else if (path.includes("tambah_kamar_kos")) {
+    pageTitle = "Tambah Kamar Kos";
   }
 
   const headerHTML = `
@@ -133,5 +140,4 @@ function loadHeader() {
 // Panggil fungsi setelah halaman dimuat
 window.onload = function () {
   loadHeader();
-  reloadRoomData(); // Pastikan fungsi lainnya tetap berjalan
 };
