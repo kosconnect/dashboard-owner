@@ -85,7 +85,9 @@ async function renderBoardingHouseTable(boardingHouses) {
               </div>
               <div class="right">
                 <p><strong>Fasilitas Umum Kos:</strong></p>
+                <div class="facility-list">
                 <ul>${facilityDisplay}</ul>
+                </div>
               </div>
           </div>
 

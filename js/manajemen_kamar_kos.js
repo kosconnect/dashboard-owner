@@ -110,7 +110,7 @@ async function reloadRoomData() {
     const boardingHouseId = urlParams.get("boarding_house_id");
 
     const response = await fetch(
-      `https://kosconnect-server.vercel.app/api/rooms/${boardingHouseId}`,
+      `https://kosconnect-server.vercel.app/api/rooms/boarding-house/${boardingHouseId}`,
       {
         method: "GET",
         headers: { Authorization: `Bearer ${authToken}` },

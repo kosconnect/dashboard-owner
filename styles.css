@@ -509,13 +509,10 @@ tbody tr:hover {
     margin-right: 10px;
 }
 
-.card-header {
-    gap: 10px;
-}
-
 .card-title {
     display: flex;
     justify-content: space-around;
+    max-height: 40px;
     /* Allow title to take up available space */
 }
 
@@ -527,6 +524,7 @@ tbody tr:hover {
 .card-header p {
     font-family: 'Merriweather Sans', serif;
     color: #1b3446;
+    max-height: 30px;
 }
 
 .card-content {
@@ -545,6 +543,13 @@ tbody tr:hover {
 .left,
 .center {
     max-width: 300px;
+}
+
+.facility-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
 }
 
 .card-button {
