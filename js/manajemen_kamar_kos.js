@@ -1,4 +1,15 @@
-import { getCookie } from "./utils.js";
+// Fungsi untuk membaca nilai cookie berdasarkan nama
+function getCookie(name) {
+  const cookies = document.cookie.split("; ");
+  for (let cookie of cookies) {
+    const [key, value] = cookie.split("=");
+    if (key === name) {
+      return decodeURIComponent(value);
+    }
+  }
+  return null;
+}
+
 // Variabel global untuk menyimpan semua data kamar kos
 let allRoomData = [];
 

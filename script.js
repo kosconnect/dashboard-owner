@@ -1,5 +1,3 @@
-import { getCookie } from "./utils.js"; // Import getCookie dari utils.js
-
 function toggleDropdown() {
   const dropdown = document.querySelector(".dropdown-menu");
   dropdown.style.display =
@@ -9,6 +7,16 @@ function toggleDropdown() {
 // Buat function ini bisa diakses dari HTML
 window.toggleDropdown = toggleDropdown;
 
+function getCookie(name) {
+  const cookies = document.cookie.split("; ");
+  for (let cookie of cookies) {
+    const [key, value] = cookie.split("=");
+    if (key === name) {
+      return decodeURIComponent(value);
+    }
+  }
+  return null;
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   loadSidebar();

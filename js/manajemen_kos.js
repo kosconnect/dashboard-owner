@@ -1,4 +1,14 @@
-import { getCookie } from "./utils.js";
+// Fungsi untuk membaca nilai cookie berdasarkan nama
+function getCookie(name) {
+  const cookies = document.cookie.split("; ");
+  for (let cookie of cookies) {
+    const [key, value] = cookie.split("=");
+    if (key === name) {
+      return decodeURIComponent(value);
+    }
+  }
+  return null;
+}
 
 // Variabel global untuk menyimpan semua data boarding houses
 let allBoardingHouseData = [];
@@ -33,7 +43,9 @@ async function renderBoardingHouseTable(boardingHouses) {
           ? detail[0]?.category_name
           : "Kategori Tidak Diketahui";
       const facilityList =
-        detail.length > 0 && detail[0]?.facilities ? detail[0].facilities : [];
+        detail.length > 0 && detail[0]?.facilities
+          ? detail[0].facilities
+          : [];
 
       // Buat tampilan semua gambar
       const imageGallery =
