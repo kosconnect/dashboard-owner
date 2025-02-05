@@ -90,9 +90,23 @@ function loadSidebar() {
 }
 
 function loadHeader() {
+  let pageTitle = "Dashboard Pemilik Kos"; // Default title
+
+  // Ambil nama halaman dari URL atau title dokumen
+  const path = window.location.pathname;
+  if (path.includes("manajemen_kamar_kos")) {
+    pageTitle = "Manajemen Kamar Kos";
+  } else if (path.includes("manajemen_kos")) {
+    pageTitle = "Manajemen Kos";
+  } else if (path.includes("edit_kos")) {
+    pageTitle = "Edit Kos";
+  } else if (path.includes("edit_kamar")) {
+    pageTitle = "Edit Kamar Kos";
+  }
+
   const headerHTML = `
         <div class="dashboard-header">
-            <h1>Dashboard Pemilik Kos</h1>
+            <h1>${pageTitle}</h1>
             <div class="header-icons">
                 <a href="#"><i class="fas fa-bell"></i></a>
                 <a href="#"><i class="fas fa-cog"></i></a>
@@ -112,5 +126,12 @@ function loadHeader() {
             </div>
         </div>
     `;
+
   document.getElementById("header-container").innerHTML = headerHTML;
 }
+
+// Panggil fungsi setelah halaman dimuat
+window.onload = function () {
+  loadHeader();
+  reloadRoomData(); // Pastikan fungsi lainnya tetap berjalan
+};
