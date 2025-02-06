@@ -170,16 +170,42 @@ async function fetchRoomData() {
     document.getElementById("hargaKamar4").value = roomData.price.yearly || "";
 
     // Menambahkan gambar yang sudah ada, jika ada
+    // const imageContainer = document.querySelector(".image-inputs");
+    // if (Array.isArray(roomData.images) && roomData.images.length > 0) {
+    //   roomData.images.forEach((image, index) => {
+    //     const imageElement = document.createElement("img");
+    //     imageElement.src = image;
+    //     imageElement.alt = `Gambar ${index + 1}`;
+    //     imageElement.style.width = "100px"; // Gaya gambar jika perlu
+    //     imageElement.style.marginRight = "5px"; // Agar ada jarak antar gambar
+    //     imageContainer.appendChild(imageElement);
+    //   });
+    // }
     const imageContainer = document.querySelector(".image-inputs");
-    if (Array.isArray(roomData.images) && roomData.images.length > 0) {
-      roomData.images.forEach((image, index) => {
-        const imageElement = document.createElement("img");
-        imageElement.src = image;
-        imageElement.alt = `Gambar ${index + 1}`;
-        imageElement.style.width = "100px"; // Gaya gambar jika perlu
-        imageElement.style.marginRight = "5px"; // Agar ada jarak antar gambar
-        imageContainer.appendChild(imageElement);
-      });
+    imageContainer.innerHTML = "";
+
+    const existingImages = roomData.images || [];
+    for (let i = 0; i < 5; i++) {
+      const imageWrapper = document.createElement("div");
+      imageWrapper.classList.add("image-wrapper");
+
+      const inputFile = document.createElement("input");
+      inputFile.type = "file";
+      inputFile.name = "images[]";
+      inputFile.accept = "image/*";
+
+      const label = document.createElement("label");
+      label.textContent = `Gambar ${i + 1}`;
+
+      if (existingImages[i]) {
+        const imageName = document.createElement("span");
+        imageName.textContent = existingImages[i];
+        imageWrapper.appendChild(imageName);
+      }
+
+      imageWrapper.appendChild(label);
+      imageWrapper.appendChild(inputFile);
+      imageContainer.appendChild(imageWrapper);
     }
 
     await fetchData(
