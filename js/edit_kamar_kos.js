@@ -22,7 +22,8 @@ async function fetchData(
   keyId,
   keyName,
   isCheckbox = false,
-  includePrice = false
+  includePrice = false,
+  selectedValues = []
 ) {
   if (!token) {
     console.error("Tidak ada token JWT, tidak dapat melanjutkan permintaan.");
@@ -62,6 +63,9 @@ async function fetchData(
             : "roomFacilities[]";
         checkboxInput.value = item[keyId];
         checkboxInput.id = `${containerElement.id}_${item[keyId]}`;
+        if (selectedValues.includes(item[keyId])) {
+          checkboxInput.checked = true;
+        }
 
         const checkboxLabel = document.createElement("label");
         checkboxLabel.setAttribute("for", checkboxInput.id);
@@ -88,7 +92,7 @@ async function fetchData(
     console.error("Error:", error);
   }
 }
-
+//fetch data
 async function fetchRoomData() {
   if (!roomId) {
     console.error("ID kamar tidak ditemukan.");
@@ -117,7 +121,6 @@ async function fetchRoomData() {
     document.getElementById("roomType").value = roomData.room_type || "";
     document.getElementById("numberAvailable").value =
       roomData.number_available || "";
-
     document.getElementById("hargaKamar1").value = roomData.price.monthly || "";
     document.getElementById("hargaKamar2").value =
       roomData.price.quarterly || "";
@@ -125,29 +128,31 @@ async function fetchRoomData() {
       roomData.price.semi_annual || "";
     document.getElementById("hargaKamar4").value = roomData.price.yearly || "";
 
-    // Menambahkan gambar yang sudah ada, jika ada
     const imageContainer = document.querySelector(".image-inputs");
-    if (
-      Array.isArray(data.images) &&
-      data.boardingHouse.images.length > 0
-    ) {
-      data.boardingHouse.images.forEach((image, index) => {
-        const imageElement = document.createElement("img");
-        imageElement.src = image;
-        imageElement.alt = `Gambar ${index + 1}`;
-        imageElement.style.width = "100px"; // Gaya gambar jika perlu
-        imageContainer.appendChild(imageElement);
+    imageContainer.innerHTML = "";
+    if (Array.isArray(roomData.images) && roomData.images.length > 0) {
+      roomData.images.forEach((image, index) => {
+        const imgPreview = document.createElement("img");
+        imgPreview.src = image;
+        imgPreview.alt = `Gambar ${index + 1}`;
+        imgPreview.style.width = "100px";
+        imgPreview.style.marginRight = "5px";
+        imageContainer.appendChild(imgPreview);
       });
     }
-  } catch (error) {
-    console.error("Error:", error);
-  }
-}
 
-async function fetchBoardingHouseName() {
-  if (!roomId) return;
-  try {
-    const response = await fetch(
+    await fetchData(
+      "https://kosconnect-server.vercel.app/api/facility/type?type=room",
+      document.getElementById("roomFacilities"),
+      "facility_id",
+      "name",
+      true,
+      false,
+      roomData.room_facilities
+    );
+
+    // Ambil nama boarding house dari endpoint detail
+    const detailResponse = await fetch(
       `https://kosconnect-server.vercel.app/api/rooms/${roomId}/detail`,
       {
         method: "GET",
@@ -157,63 +162,25 @@ async function fetchBoardingHouseName() {
         },
       }
     );
-    if (!response.ok) throw new Error("Gagal mengambil nama kos");
-    const data = await response.json();
-    document.getElementById(
-      "header"
-    ).innerHTML = `<h2>Form Tambah Kamar Kos - ${data.boarding_house_name}</h2>`;
+
+    if (detailResponse.ok) {
+      const detailData = await detailResponse.json();
+      document.getElementById(
+        "header"
+      ).innerHTML = `<h2>Form Edit Kamar Kos - ${detailData[0].boarding_house_name}</h2>`;
+    }
   } catch (error) {
     console.error("Error:", error);
   }
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
-  await fetchRoomData();
-  await fetchBoardingHouseName();
-  await fetchData(
-    "https://kosconnect-server.vercel.app/api/facility/type?type=room",
-    document.getElementById("roomFacilities"),
-    "facility_id",
-    "name",
-    true
-  );
-  await fetchData(
-    "https://kosconnect-server.vercel.app/api/customFacilities/owner",
-    document.getElementById("customFacilities"),
-    "custom_facility_id",
-    "name",
-    true,
-    true
-  );
-});
+document.addEventListener("DOMContentLoaded", fetchRoomData);
 
 document
   .getElementById("formEditRoom")
   .addEventListener("submit", async function (e) {
     e.preventDefault();
-
     const formData = new FormData(this);
-    formData.append(
-      "room_facilities",
-      JSON.stringify(
-        [
-          ...document.querySelectorAll(
-            "input[name='roomFacilities[]']:checked"
-          ),
-        ].map((opt) => opt.value)
-      )
-    );
-    formData.append(
-      "custom_facilities",
-      JSON.stringify(
-        [
-          ...document.querySelectorAll(
-            "input[name='fasilitasTambahan[]']:checked"
-          ),
-        ].map((opt) => opt.value)
-      )
-    );
-
     try {
       const response = await fetch(
         `https://kosconnect-server.vercel.app/api/rooms/${roomId}`,
