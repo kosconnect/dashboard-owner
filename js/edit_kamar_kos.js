@@ -86,6 +86,7 @@ async function fetchData(
 }
 
 // Fungsi untuk mengambil data kamar berdasarkan ID dan mengisi form
+// Fungsi untuk mengambil data kamar berdasarkan ID dan mengisi form
 async function fetchRoomData() {
   if (!roomId) {
     console.error("ID kamar tidak ditemukan.");
@@ -125,7 +126,22 @@ async function fetchRoomData() {
     // Menambahkan gambar yang sudah ada, jika ada
     const imageContainer = document.querySelector(".image-inputs");
     imageContainer.innerHTML = "";
+
+    // Menambahkan kolom input gambar, selalu ada 5 kolom
+    for (let i = 0; i < 5; i++) {
+      const imageWrapper = document.createElement("div");
+      const imageInput = document.createElement("input");
+      imageInput.type = "file";
+      imageInput.name = "images[]";
+      imageWrapper.appendChild(imageInput);
+      imageContainer.appendChild(imageWrapper);
+    }
+
+    // Menampilkan gambar yang sudah ada di bawah input gambar
     if (Array.isArray(roomData.images) && roomData.images.length > 0) {
+      const previewContainer = document.createElement("div");
+      previewContainer.classList.add("image-previews");
+
       roomData.images.forEach((image, index) => {
         const imageWrapper = document.createElement("div");
 
@@ -137,14 +153,11 @@ async function fetchRoomData() {
         imgPreview.style.marginRight = "5px";
         imageWrapper.appendChild(imgPreview);
 
-        // Input for New Image
-        const imageInput = document.createElement("input");
-        imageInput.type = "file";
-        imageInput.name = "images[]";
-        imageWrapper.appendChild(imageInput);
-
-        imageContainer.appendChild(imageWrapper);
+        previewContainer.appendChild(imageWrapper);
       });
+
+      // Menambahkan preview gambar di bawah kolom input gambar
+      imageContainer.appendChild(previewContainer);
     }
 
     await fetchData(
@@ -161,7 +174,7 @@ async function fetchRoomData() {
       "custom_facility_id",
       "name",
       true,
-      roomData.custom_facility_details.map((cf) => cf.name)
+      roomData.custom_facilities
     );
 
     // Ambil nama boarding house dari endpoint detail
@@ -196,6 +209,15 @@ document
     e.preventDefault();
 
     const formData = new FormData(this);
+    
+    // Cek jika tidak ada gambar baru yang diunggah (menghindari pengiriman input gambar kosong)
+    const imageInputs = formData.getAll('images[]');
+    const hasImages = imageInputs.some(input => input.size > 0); // Cek jika ada gambar baru
+
+    // Jika tidak ada gambar baru, kita tidak perlu mengirimkan gambar kosong
+    if (!hasImages) {
+      formData.delete('images[]'); // Hapus field gambar kosong dari FormData
+    }
 
     try {
       const response = await fetch(
