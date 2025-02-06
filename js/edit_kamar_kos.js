@@ -169,6 +169,19 @@ async function fetchRoomData() {
       roomData.price.semi_annual || "";
     document.getElementById("hargaKamar4").value = roomData.price.yearly || "";
 
+    // Menambahkan gambar yang sudah ada, jika ada
+    const imageContainer = document.querySelector(".image-inputs");
+    if (Array.isArray(roomData.images) && roomData.images.length > 0) {
+      roomData.images.forEach((image, index) => {
+        const imageElement = document.createElement("img");
+        imageElement.src = image;
+        imageElement.alt = `Gambar ${index + 1}`;
+        imageElement.style.width = "100px"; // Gaya gambar jika perlu
+        imageElement.style.marginRight = "5px"; // Agar ada jarak antar gambar
+        imageContainer.appendChild(imageElement);
+      });
+    }
+
     await fetchData(
       "https://kosconnect-server.vercel.app/api/facility/type?type=room",
       document.getElementById("roomFacilities"),
@@ -223,7 +236,23 @@ document
     console.log("Room Facilities:", fasilitasKos);
     console.log("Custom Facilities:", customFacilities);
 
+    const imageInputs = document.querySelectorAll("input[name='images[]']");
+
+    let imageCount = 0;
     const formData = new FormData();
+
+    imageInputs.forEach((input) => {
+      if (input.files.length > 0) {
+        formData.append("images", input.files[0]);
+        imageCount++;
+      }
+    });
+
+    if (imageCount > 5) {
+      alert("Anda hanya bisa mengunggah maksimal 5 gambar.");
+      return;
+    }
+
     formData.append("room_type", document.getElementById("roomType").value);
     formData.append("size", document.getElementById("size").value);
     formData.append(
