@@ -202,34 +202,69 @@ async function fetchRoomData() {
 
 document.addEventListener("DOMContentLoaded", fetchRoomData);
 
-// Fungsi untuk menangani submit form (PUT request)
 document
   .getElementById("formEditRoom")
   .addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    const formData = new FormData(this);
-    
-    // Cek jika tidak ada gambar baru yang diunggah (menghindari pengiriman input gambar kosong)
-    const imageInputs = formData.getAll('images[]');
-    const hasImages = imageInputs.some(input => input.size > 0); // Cek jika ada gambar baru
+    const roomType = document.getElementById("roomType").value;
+    const size = document.getElementById("size").value;
+    const numberAvailable = document.getElementById("numberAvailable").value;
+    const hargaKamar1 = document.getElementById("hargaKamar1").value;
+    const hargaKamar2 = document.getElementById("hargaKamar2").value;
+    const hargaKamar3 = document.getElementById("hargaKamar3").value;
+    const hargaKamar4 = document.getElementById("hargaKamar4").value;
 
-    // Jika tidak ada gambar baru, kita tidak perlu mengirimkan gambar kosong
-    if (!hasImages) {
-      formData.delete('images[]'); // Hapus field gambar kosong dari FormData
+    const fasilitasKos = Array.from(
+      document.querySelectorAll("input[name='fasilitasKos[]']:checked")
+    ).map((opt) => opt.value);
+    const customFacilities = Array.from(
+      document.querySelectorAll("input[name='customFacilities[]']:checked")
+    ).map((opt) => opt.value);
+
+    const imageInputs = document.querySelectorAll("input[name='images[]']");
+
+    let imageCount = 0;
+    const formData = new FormData();
+
+    imageInputs.forEach((input) => {
+      if (input.files.length > 0) {
+        formData.append("images", input.files[0]);
+        imageCount++;
+      }
+    });
+
+    if (imageCount > 5) {
+      alert("Anda hanya bisa mengunggah maksimal 5 gambar.");
+      return;
     }
+
+    // Menambahkan data kamar ke FormData
+    formData.append("room_type", roomType);
+    formData.append("size", size);
+    formData.append("number_available", numberAvailable);
+    formData.append("price_monthly", hargaKamar1);
+    formData.append("price_quarterly", hargaKamar2);
+    formData.append("price_semi_annual", hargaKamar3);
+    formData.append("price_yearly", hargaKamar4);
+
+    formData.append("room_facilities", JSON.stringify(fasilitasKos));
+    formData.append("custom_facilities", JSON.stringify(customFacilities));
 
     try {
       const response = await fetch(
         `https://kosconnect-server.vercel.app/api/rooms/${roomId}`,
         {
           method: "PUT",
-          headers: { Authorization: `Bearer ${token}` },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
           body: formData,
         }
       );
 
       if (!response.ok) throw new Error("Gagal memperbarui data kamar");
+
       alert("Kamar berhasil diperbarui!");
       window.location.href = `manajemen_kamar_kos.html?boarding_house_id=${boardingHouseId}`;
     } catch (error) {
