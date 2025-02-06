@@ -128,7 +128,7 @@ async function fetchRoomData() {
     // Menambahkan gambar yang sudah ada, jika ada
     const imageContainer = document.querySelector(".image-inputs");
     if (
-      Array.isArray(data.boardingHouse.images) &&
+      Array.isArray(data.images) &&
       data.boardingHouse.images.length > 0
     ) {
       data.boardingHouse.images.forEach((image, index) => {
