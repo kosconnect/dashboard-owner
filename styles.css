@@ -586,7 +586,9 @@ tbody tr:hover {
     align-items: center;
     /* Untuk menyamakan posisi label dan input */
 }
-
+label {
+    margin-top: 15px;
+}
 .form-group label {
     width: 120px;
     /* Lebar tetap untuk menyamakan label */
@@ -630,7 +632,6 @@ select {
     border: 1px solid #ccc;
     border-radius: 5px;
     box-sizing: border-box;
-    margin-bottom: 15px;
 }
 
 /* Styling untuk input file gambar */
