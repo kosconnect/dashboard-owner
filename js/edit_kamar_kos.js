@@ -110,12 +110,31 @@ async function fetchRoomData() {
     if (!response.ok) throw new Error("Gagal mengambil data kamar");
 
     const data = await response.json();
-    boardingHouseId = data.boarding_house_id;
+    const roomData = data.data;
+    boardingHouseId = roomData.boarding_house_id;
 
-    document.getElementById("size").value = data.size || "";
-    document.getElementById("roomType").value = data.room_type || "";
+    document.getElementById("size").value = roomData.size || "";
+    document.getElementById("roomType").value = roomData.room_type || "";
     document.getElementById("numberAvailable").value =
-      data.number_available || "";
+      roomData.number_available || "";
+
+    document.getElementById("hargaKamar1").value = roomData.price.monthly || "";
+    document.getElementById("hargaKamar2").value =
+      roomData.price.quarterly || "";
+    document.getElementById("hargaKamar3").value =
+      roomData.price.semi_annual || "";
+    document.getElementById("hargaKamar4").value = roomData.price.yearly || "";
+
+    const imageContainer = document.getElementById("roomImages");
+    imageContainer.innerHTML = "";
+    roomData.images.forEach((imgUrl) => {
+      const imgElement = document.createElement("img");
+      imgElement.src = imgUrl;
+      imgElement.alt = "Room Image";
+      imgElement.style.width = "150px";
+      imgElement.style.margin = "5px";
+      imageContainer.appendChild(imgElement);
+    });
   } catch (error) {
     console.error("Error:", error);
   }
@@ -136,9 +155,8 @@ async function fetchBoardingHouseName() {
     );
     if (!response.ok) throw new Error("Gagal mengambil nama kos");
     const data = await response.json();
-   document.getElementById(
-      "header"
-    ).innerHTML = `<h2>Form Tambah Kamar Kos - ${data.boarding_house_name}</h2>`;
+    document.getElementById("boardingHouseName").textContent =
+      data.boarding_house_name;
   } catch (error) {
     console.error("Error:", error);
   }

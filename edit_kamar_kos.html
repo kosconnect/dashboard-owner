@@ -27,17 +27,16 @@
         <div id="header-container"></div>
 
             <div class="main-container">
-                <div class="header">
-                    <h2>Form Edit Kamar Kos</h2>
+                <div class="header" id="header">
                 </div>
                 <div class="form-container">
                     <form id="formEditRoom">
                         <label for="tipeKamar" class="form-label">Tipe Kamar</label>
-                        <input type="text" id="tipeKamar" name="tipeKamar"
+                        <input type="text" id="roomType" name="tipeKamar"
                             placeholder="Contoh: Standar, Deluxe, Regular, Studio" required>
 
                         <label for="ukuranKamar" class="form-label">Ukuran Kamar</label>
-                        <input type="text" id="ukuranKamar" name="ukuranKamar" placeholder="Contoh: 3x4 meter" required>
+                        <input type="text" id="size" name="ukuranKamar" placeholder="Contoh: 3x4 meter" required>
 
                         <!-- <label for="hargaKamar" class="form-label">Harga Kamar</label>
                             <input type="number" id="hargaKamar" name="hargaKamar" placeholder="Harga per bulan" required> -->
@@ -66,7 +65,7 @@
                         </div>
 
                         <label for="kamarTersedia" class="form-label">Jumlah Kamar Tersedia</label>
-                        <input type="number" id="kamarTersedia" name="kamarTersedia"
+                        <input type="number" id="numberAvailable" name="kamarTersedia"
                             placeholder="Jumlah kamar yang tersedia" required>
 
                         <!-- Input untuk gambar -->
@@ -89,12 +88,12 @@
                         </div>
 
                         <label for="fasilitasKamar" class="form-label">Pilih Fasilitas</label>
-                        <div id="fasilitasKamar" name="fasilitasKamar[]" class="checkbox-group">
+                        <div id="roomFacilities" name="fasilitasKamar[]" class="checkbox-group">
                             <!-- Data Fasilitas akan diisi menggunakan JavaScript -->
                         </div>
 
                         <label for="fasilitasTambahan" class="form-label">Pilih Fasilitas Custom</label>
-                        <div id="fasilitasTambahan" name="fasilitasTambahan[]" class="checkbox-group">
+                        <div id="customFacilities" name="fasilitasTambahan[]" class="checkbox-group">
                             <!-- Data Fasilitas Tambahan akan diisi menggunakan JavaScript -->
                         </div>
                         <p class="fasilitas-keterangan">*Merupakan deposito atau pembayaran tiap bulan untuk fasilitas
