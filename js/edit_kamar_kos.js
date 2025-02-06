@@ -125,39 +125,18 @@ async function fetchRoomData() {
 
     // Menambahkan gambar yang sudah ada, jika ada
     const imageContainer = document.querySelector(".image-inputs");
-    imageContainer.innerHTML = "";
-
-    // Menambahkan kolom input gambar, selalu ada 5 kolom
-    for (let i = 0; i < 5; i++) {
-      const imageWrapper = document.createElement("div");
-      const imageInput = document.createElement("input");
-      imageInput.type = "file";
-      imageInput.name = "images[]";
-      imageWrapper.appendChild(imageInput);
-      imageContainer.appendChild(imageWrapper);
-    }
-
-    // Menampilkan gambar yang sudah ada di bawah input gambar
-    if (Array.isArray(roomData.images) && roomData.images.length > 0) {
-      const previewContainer = document.createElement("div");
-      previewContainer.classList.add("image-previews");
-
-      roomData.images.forEach((image, index) => {
-        const imageWrapper = document.createElement("div");
-
-        // Preview Image
-        const imgPreview = document.createElement("img");
-        imgPreview.src = image;
-        imgPreview.alt = `Gambar ${index + 1}`;
-        imgPreview.style.width = "100px"; // Gaya gambar jika perlu
-        imgPreview.style.marginRight = "5px";
-        imageWrapper.appendChild(imgPreview);
-
-        previewContainer.appendChild(imageWrapper);
+    if (
+      Array.isArray(data.boardingHouse.images) &&
+      data.boardingHouse.images.length > 0
+    ) {
+      data.boardingHouse.images.forEach((image, index) => {
+        const imageElement = document.createElement("img");
+        imageElement.src = image;
+        imageElement.alt = `Gambar ${index + 1}`;
+        imageElement.style.width = "100px"; // Gaya gambar jika perlu
+        imageElement.style.marginRight = "5px"; // Agar ada jarak antar gambar
+        imageContainer.appendChild(imageElement);
       });
-
-      // Menambahkan preview gambar di bawah kolom input gambar
-      imageContainer.appendChild(previewContainer);
     }
 
     await fetchData(
