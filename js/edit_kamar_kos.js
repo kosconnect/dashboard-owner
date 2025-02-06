@@ -125,16 +125,20 @@ async function fetchRoomData() {
       roomData.price.semi_annual || "";
     document.getElementById("hargaKamar4").value = roomData.price.yearly || "";
 
-    const imageContainer = document.getElementById("roomImages");
-    imageContainer.innerHTML = "";
-    roomData.images.forEach((imgUrl) => {
-      const imgElement = document.createElement("img");
-      imgElement.src = imgUrl;
-      imgElement.alt = "Room Image";
-      imgElement.style.width = "150px";
-      imgElement.style.margin = "5px";
-      imageContainer.appendChild(imgElement);
-    });
+    // Menambahkan gambar yang sudah ada, jika ada
+    const imageContainer = document.querySelector(".image-inputs");
+    if (
+      Array.isArray(data.boardingHouse.images) &&
+      data.boardingHouse.images.length > 0
+    ) {
+      data.boardingHouse.images.forEach((image, index) => {
+        const imageElement = document.createElement("img");
+        imageElement.src = image;
+        imageElement.alt = `Gambar ${index + 1}`;
+        imageElement.style.width = "100px"; // Gaya gambar jika perlu
+        imageContainer.appendChild(imageElement);
+      });
+    }
   } catch (error) {
     console.error("Error:", error);
   }
