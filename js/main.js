@@ -21,8 +21,13 @@ async function getTotalKos() {
     );
     const kosData = await kosResponse.json();
 
-    // Tampilkan jumlah kos pada widget
-    document.getElementById("total-kos").innerText = kosData.length; // Jumlah data kos
+    // Periksa apakah kosData adalah array
+    if (Array.isArray(kosData)) {
+      // Tampilkan jumlah kos pada widget
+      document.getElementById("total-kos").innerText = kosData.length; // Jumlah data kos
+    } else {
+      console.error("Data kos tidak dalam format array", kosData);
+    }
   } catch (error) {
     console.error("Error fetching kos data:", error);
   }
@@ -43,28 +48,36 @@ async function getTotalKamar() {
     );
     const boardingHouseData = await boardingHouseResponse.json();
 
-    let totalRooms = 0;
+    // Periksa apakah boardingHouseData adalah array
+    if (Array.isArray(boardingHouseData)) {
+      let totalRooms = 0;
 
-    for (const boardingHouse of boardingHouseData) {
-      const boardingHouseId = boardingHouse.id;
+      for (const boardingHouse of boardingHouseData) {
+        const boardingHouseId = boardingHouse.id;
 
-      // Ambil data kamar kos berdasarkan boardingHouseId
-      const roomsResponse = await fetch(
-        `https://kosconnect-server.vercel.app/api/rooms/boarding-house/${boardingHouseId}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`, // Menambahkan token pada header
-          },
-        }
+        // Ambil data kamar kos berdasarkan boardingHouseId
+        const roomsResponse = await fetch(
+          `https://kosconnect-server.vercel.app/api/rooms/boarding-house/${boardingHouseId}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`, // Menambahkan token pada header
+            },
+          }
+        );
+        const roomsData = await roomsResponse.json();
+
+        totalRooms += roomsData.length; // Menjumlahkan total kamar dari semua boarding house
+      }
+
+      // Tampilkan jumlah kamar kos pada widget
+      document.getElementById("total-kamar").innerText = totalRooms;
+    } else {
+      console.error(
+        "Data boardingHouse tidak dalam format array",
+        boardingHouseData
       );
-      const roomsData = await roomsResponse.json();
-
-      totalRooms += roomsData.length; // Menjumlahkan total kamar dari semua boarding house
     }
-
-    // Tampilkan jumlah kamar kos pada widget
-    document.getElementById("total-kamar").innerText = totalRooms;
   } catch (error) {
     console.error("Error fetching rooms data:", error);
   }
@@ -85,14 +98,19 @@ async function getTotalTransaksi() {
     );
     const transaksiData = await transaksiResponse.json();
 
-    // Filter transaksi dengan status settlement
-    const settlementTransactions = transaksiData.filter(
-      (transaction) => transaction.payment_status === "settlement"
-    );
+    // Periksa apakah transaksiData adalah array
+    if (Array.isArray(transaksiData)) {
+      // Filter transaksi dengan status settlement
+      const settlementTransactions = transaksiData.filter(
+        (transaction) => transaction.payment_status === "settlement"
+      );
 
-    // Tampilkan total transaksi settlement
-    document.getElementById("total-transaksi").innerText =
-      settlementTransactions.length;
+      // Tampilkan total transaksi settlement
+      document.getElementById("total-transaksi").innerText =
+        settlementTransactions.length;
+    } else {
+      console.error("Data transaksi tidak dalam format array", transaksiData);
+    }
   } catch (error) {
     console.error("Error fetching transactions:", error);
   }
