@@ -44,7 +44,7 @@ async function renderOrderTable(orders) {
         const roomDetail = await roomResponse.json();
 
         // Ambil room_type dari roomDetail
-        const roomName = roomDetail[0]?.room_name || "Tidak Diketahui"; // default "Tidak Diketahui" jika tidak ada room_type
+        const roomName = roomDetail && roomDetail[0] ? roomDetail[0].room_name : "Tidak Diketahui";
 
         // Ambil full_name dari personal_info
         const fullName = order.personal_info?.full_name || "Tidak Diketahui"; // default jika tidak ada personal_info atau full_name

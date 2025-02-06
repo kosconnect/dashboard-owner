@@ -21,7 +21,7 @@ async function getTotalKos() {
     );
     const kosData = await kosResponse.json();
 
-    // Periksa apakah kosData adalah array
+    // Periksa apakah kosData.data adalah array
     if (Array.isArray(kosData.data)) {
       // Tampilkan jumlah kos pada widget
       document.getElementById("total-kos").innerText = kosData.data.length; // Jumlah data kos
@@ -51,7 +51,7 @@ async function getTotalKamar() {
     // Debug: Cek apakah boardingHouseData ada dan valid
     console.log("boardingHouseData:", boardingHouseData);
 
-    // Periksa apakah boardingHouseData adalah array dan tidak kosong
+    // Periksa apakah boardingHouseData.data adalah array dan tidak kosong
     if (
       Array.isArray(boardingHouseData.data) &&
       boardingHouseData.data.length > 0
@@ -79,7 +79,12 @@ async function getTotalKamar() {
         // Debug: Cek roomsData
         console.log("roomsData:", roomsData);
 
-        totalRooms += roomsData.data.length; // Menjumlahkan total kamar dari semua boarding house
+        // Periksa apakah roomsData.data adalah array
+        if (Array.isArray(roomsData.data)) {
+          totalRooms += roomsData.data.length; // Menjumlahkan total kamar dari semua boarding house
+        } else {
+          console.error("Data rooms tidak dalam format array", roomsData);
+        }
       }
 
       // Tampilkan jumlah kamar kos pada widget
@@ -110,7 +115,7 @@ async function getTotalTransaksi() {
     );
     const transaksiData = await transaksiResponse.json();
 
-    // Periksa apakah transaksiData adalah array
+    // Periksa apakah transaksiData.data adalah array
     if (Array.isArray(transaksiData.data)) {
       // Filter transaksi dengan status settlement
       const settlementTransactions = transaksiData.data.filter(
