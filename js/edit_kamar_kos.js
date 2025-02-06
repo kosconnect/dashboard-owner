@@ -11,18 +11,19 @@ function getJwtToken() {
   return null;
 }
 
+// Ambil token dari cookie
 const token = getJwtToken();
 const urlParams = new URLSearchParams(window.location.search);
 const roomId = urlParams.get("room_id");
 let boardingHouseId = "";
 
+// Fungsi untuk fetch data dan isi dropdown atau checkbox
 async function fetchData(
   url,
   containerElement,
   keyId,
   keyName,
   isCheckbox = false,
-  includePrice = false,
   selectedValues = []
 ) {
   if (!token) {
@@ -57,12 +58,10 @@ async function fetchData(
         const checkboxWrapper = document.createElement("div");
         const checkboxInput = document.createElement("input");
         checkboxInput.type = "checkbox";
-        checkboxInput.name =
-          containerElement.id === "customFacilities"
-            ? "customFacilities[]"
-            : "roomFacilities[]";
+        checkboxInput.name = "fasilitasKos[]";
         checkboxInput.value = item[keyId];
         checkboxInput.id = `${containerElement.id}_${item[keyId]}`;
+
         if (selectedValues.includes(item[keyId])) {
           checkboxInput.checked = true;
         }
@@ -73,13 +72,6 @@ async function fetchData(
 
         checkboxWrapper.appendChild(checkboxInput);
         checkboxWrapper.appendChild(checkboxLabel);
-
-        if (includePrice && containerElement.id === "customFacilities") {
-          const priceSpan = document.createElement("span");
-          priceSpan.textContent = ` - Rp ${item.price}`;
-          checkboxWrapper.appendChild(priceSpan);
-        }
-
         containerElement.appendChild(checkboxWrapper);
       } else {
         const option = document.createElement("option");
@@ -92,7 +84,8 @@ async function fetchData(
     console.error("Error:", error);
   }
 }
-//fetch data
+
+// Fungsi untuk mengambil data kamar berdasarkan ID dan mengisi form
 async function fetchRoomData() {
   if (!roomId) {
     console.error("ID kamar tidak ditemukan.");
@@ -117,6 +110,7 @@ async function fetchRoomData() {
     const roomData = data.data;
     boardingHouseId = roomData.boarding_house_id;
 
+    // Mengisi form dengan data kamar
     document.getElementById("size").value = roomData.size || "";
     document.getElementById("roomType").value = roomData.room_type || "";
     document.getElementById("numberAvailable").value =
@@ -128,16 +122,28 @@ async function fetchRoomData() {
       roomData.price.semi_annual || "";
     document.getElementById("hargaKamar4").value = roomData.price.yearly || "";
 
+    // Menambahkan gambar yang sudah ada, jika ada
     const imageContainer = document.querySelector(".image-inputs");
     imageContainer.innerHTML = "";
     if (Array.isArray(roomData.images) && roomData.images.length > 0) {
       roomData.images.forEach((image, index) => {
+        const imageWrapper = document.createElement("div");
+
+        // Preview Image
         const imgPreview = document.createElement("img");
         imgPreview.src = image;
         imgPreview.alt = `Gambar ${index + 1}`;
-        imgPreview.style.width = "100px";
+        imgPreview.style.width = "100px"; // Gaya gambar jika perlu
         imgPreview.style.marginRight = "5px";
-        imageContainer.appendChild(imgPreview);
+        imageWrapper.appendChild(imgPreview);
+
+        // Input for New Image
+        const imageInput = document.createElement("input");
+        imageInput.type = "file";
+        imageInput.name = "images[]";
+        imageWrapper.appendChild(imageInput);
+
+        imageContainer.appendChild(imageWrapper);
       });
     }
 
@@ -147,8 +153,15 @@ async function fetchRoomData() {
       "facility_id",
       "name",
       true,
-      false,
       roomData.room_facilities
+    );
+    await fetchData(
+      "https://kosconnect-server.vercel.app/api/customFacilities/owner",
+      document.getElementById("customFacilities"),
+      "custom_facility_id",
+      "name",
+      true,
+      roomData.custom_facility_details.map((cf) => cf.name)
     );
 
     // Ambil nama boarding house dari endpoint detail
@@ -176,11 +189,14 @@ async function fetchRoomData() {
 
 document.addEventListener("DOMContentLoaded", fetchRoomData);
 
+// Fungsi untuk menangani submit form (PUT request)
 document
   .getElementById("formEditRoom")
   .addEventListener("submit", async function (e) {
     e.preventDefault();
+
     const formData = new FormData(this);
+
     try {
       const response = await fetch(
         `https://kosconnect-server.vercel.app/api/rooms/${roomId}`,
