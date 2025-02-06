@@ -122,9 +122,13 @@ async function getTotalTransaksi() {
         (transaction) => transaction.payment_status === "settlement"
       );
 
-      // Tampilkan total transaksi settlement
-      document.getElementById("total-transaksi").innerText =
-        settlementTransactions.length;
+      // Hitung total uang dari transaksi settlement
+      const totalAmount = settlementTransactions.reduce((sum, transaction) => {
+        return sum + transaction.total; // Jumlahkan total dari setiap transaksi
+      }, 0);
+
+      // Tampilkan total transaksi settlement dalam format mata uang
+      document.getElementById("total-transaksi").innerText = `Rp ${totalAmount.toLocaleString("id-ID")}`;
     } else {
       console.error("Data transaksi tidak dalam format array", transaksiData);
     }
