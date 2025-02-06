@@ -22,9 +22,9 @@ async function getTotalKos() {
     const kosData = await kosResponse.json();
 
     // Periksa apakah kosData adalah array
-    if (Array.isArray(kosData)) {
+    if (Array.isArray(kosData.data)) {
       // Tampilkan jumlah kos pada widget
-      document.getElementById("total-kos").innerText = kosData.length; // Jumlah data kos
+      document.getElementById("total-kos").innerText = kosData.data.length; // Jumlah data kos
     } else {
       console.error("Data kos tidak dalam format array", kosData);
     }
@@ -52,11 +52,14 @@ async function getTotalKamar() {
     console.log("boardingHouseData:", boardingHouseData);
 
     // Periksa apakah boardingHouseData adalah array dan tidak kosong
-    if (Array.isArray(boardingHouseData) && boardingHouseData.length > 0) {
+    if (
+      Array.isArray(boardingHouseData.data) &&
+      boardingHouseData.data.length > 0
+    ) {
       let totalRooms = 0;
 
-      for (const boardingHouse of boardingHouseData) {
-        const boardingHouseId = boardingHouse.id;
+      for (const boardingHouse of boardingHouseData.data) {
+        const boardingHouseId = boardingHouse.boarding_house_id; // Gunakan boarding_house_id
 
         // Debug: Cek boardingHouseId
         console.log("boardingHouseId:", boardingHouseId);
@@ -76,7 +79,7 @@ async function getTotalKamar() {
         // Debug: Cek roomsData
         console.log("roomsData:", roomsData);
 
-        totalRooms += roomsData.length; // Menjumlahkan total kamar dari semua boarding house
+        totalRooms += roomsData.data.length; // Menjumlahkan total kamar dari semua boarding house
       }
 
       // Tampilkan jumlah kamar kos pada widget
@@ -108,9 +111,9 @@ async function getTotalTransaksi() {
     const transaksiData = await transaksiResponse.json();
 
     // Periksa apakah transaksiData adalah array
-    if (Array.isArray(transaksiData)) {
+    if (Array.isArray(transaksiData.data)) {
       // Filter transaksi dengan status settlement
-      const settlementTransactions = transaksiData.filter(
+      const settlementTransactions = transaksiData.data.filter(
         (transaction) => transaction.payment_status === "settlement"
       );
 
