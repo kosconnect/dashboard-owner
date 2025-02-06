@@ -19,39 +19,45 @@ function getBoardingHouseIdFromURL() {
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get("boarding_house_id");
 }
+
 // Fungsi untuk fetch boarding house berdasarkan ID
 async function fetchBoardingHouse() {
-    const boardingHouseId = getBoardingHouseIdFromURL();
-    if (!boardingHouseId) {
-        console.error("Boarding House ID tidak ditemukan di URL.");
-        return;
-    }
-    
-    if (!token) {
-        console.error("Tidak ada token JWT, tidak dapat melanjutkan permintaan.");
-        return;
+  const boardingHouseId = getBoardingHouseIdFromURL();
+  if (!boardingHouseId) {
+    console.error("Boarding House ID tidak ditemukan di URL.");
+    return;
+  }
+
+  if (!token) {
+    console.error("Tidak ada token JWT, tidak dapat melanjutkan permintaan.");
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `https://kosconnect-server.vercel.app/api/boardingHouses/${boardingHouseId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (!response.ok) throw new Error("Gagal mengambil data boarding house");
+
+    const data = await response.json();
+    if (!data.boardingHouse || !data.boardingHouse.name) {
+      throw new Error("Data boarding house tidak memiliki properti 'name'");
     }
 
-    try {
-        const response = await fetch(`https://kosconnect-server.vercel.app/api/boardingHouses/${boardingHouseId}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            }
-        });
-        
-        if (!response.ok) throw new Error("Gagal mengambil data boarding house");
-        
-        const data = await response.json();
-        if (!data.boardingHouse || !data.boardingHouse.name) {
-            throw new Error("Data boarding house tidak memiliki properti 'name'");
-        }
-
-        document.getElementById("header").innerHTML = `<h2>Form Tambah Kamar Kos - ${data.boardingHouse.name}</h2>`;
-    } catch (error) {
-        console.error("Error:", error);
-    }
+    document.getElementById(
+      "header"
+    ).innerHTML = `<h2>Form Tambah Kamar Kos - ${data.boardingHouse.name}</h2>`;
+  } catch (error) {
+    console.error("Error:", error);
+  }
 }
 
 // Panggil fetchBoardingHouse saat halaman dimuat
@@ -105,7 +111,7 @@ async function fetchData(url, containerElement, keyId, keyName) {
   }
 }
 
-// Fungsi untuk fetch fasilitas umum
+// Fungsi untuk fetch fasilitas umum dan tambahan
 async function fetchFacilities() {
   if (!token) {
     console.error("Tidak ada token JWT, tidak dapat melanjutkan permintaan.");
@@ -124,11 +130,11 @@ async function fetchFacilities() {
     "name"
   );
 
-  // Fetch fasilitas tambahan tanpa owner_id
+  // Fetch fasilitas tambahan
   fetchData(
     "https://kosconnect-server.vercel.app/api/customFacilities/owner",
     fasilitasTambahanContainer,
-    "facility_id",
+    "custom_facility_id", // Ubah keyId sesuai respons backend
     "name"
   );
 }
@@ -161,9 +167,7 @@ document
     ).map((opt) => opt.value);
     const fasilitasTambahan = Array.from(
       document.querySelectorAll("input[name='fasilitasTambahan[]']:checked")
-    )
-      .map((opt) => opt.value)
-      .filter((value) => value !== "undefined" && value !== "");
+    ).map((opt) => opt.value); // Perbaikan: Menghapus filter undefined
 
     const imageInputs = document.querySelectorAll(
       "input[name='imagesKamar[]']"
@@ -196,15 +200,13 @@ document
 
     formData.append("room_type", tipeKamar);
     formData.append("size", ukuranKamar);
-    formData.append("price_monthly", hargaKamar[0]); // Mengirim harga pertama
-    formData.append("price_quarterly", hargaKamar[1] || 0); // Harga kedua (jika ada)
-    formData.append("price_semi_annual", hargaKamar[2] || 0); // Harga ketiga (jika ada)
-    formData.append("price_yearly", hargaKamar[3] || 0); // Harga keempat (jika ada)
+    formData.append("price_monthly", hargaKamar[0]); // Harga pertama
+    formData.append("price_quarterly", hargaKamar[1] || 0);
+    formData.append("price_semi_annual", hargaKamar[2] || 0);
+    formData.append("price_yearly", hargaKamar[3] || 0);
     formData.append("number_available", kamarTersedia);
     formData.append("room_facilities", JSON.stringify(fasilitasKamar));
-    formData.append("custom_facilities", JSON.stringify(fasilitasTambahan));
-
-    console.log("Data yang dikirim:", Object.fromEntries(formData.entries()));
+    formData.append("custom_facilities", JSON.stringify(fasilitasTambahan)); // Perbaikan di sini
 
     try {
       const response = await fetch(
@@ -217,9 +219,6 @@ document
           body: formData,
         }
       );
-
-      const responseText = await response.text();
-      console.log("Server Response:", responseText);
 
       if (!response.ok) throw new Error("Gagal menyimpan data");
 
