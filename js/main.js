@@ -48,12 +48,18 @@ async function getTotalKamar() {
     );
     const boardingHouseData = await boardingHouseResponse.json();
 
-    // Periksa apakah boardingHouseData adalah array
-    if (Array.isArray(boardingHouseData)) {
+    // Debug: Cek apakah boardingHouseData ada dan valid
+    console.log("boardingHouseData:", boardingHouseData);
+
+    // Periksa apakah boardingHouseData adalah array dan tidak kosong
+    if (Array.isArray(boardingHouseData) && boardingHouseData.length > 0) {
       let totalRooms = 0;
 
       for (const boardingHouse of boardingHouseData) {
         const boardingHouseId = boardingHouse.id;
+
+        // Debug: Cek boardingHouseId
+        console.log("boardingHouseId:", boardingHouseId);
 
         // Ambil data kamar kos berdasarkan boardingHouseId
         const roomsResponse = await fetch(
@@ -67,6 +73,9 @@ async function getTotalKamar() {
         );
         const roomsData = await roomsResponse.json();
 
+        // Debug: Cek roomsData
+        console.log("roomsData:", roomsData);
+
         totalRooms += roomsData.length; // Menjumlahkan total kamar dari semua boarding house
       }
 
@@ -74,7 +83,7 @@ async function getTotalKamar() {
       document.getElementById("total-kamar").innerText = totalRooms;
     } else {
       console.error(
-        "Data boardingHouse tidak dalam format array",
+        "Data boardingHouse tidak dalam format array atau kosong",
         boardingHouseData
       );
     }
