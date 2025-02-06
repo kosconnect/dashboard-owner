@@ -126,10 +126,10 @@ async function fetchRoomData() {
     // Menambahkan gambar yang sudah ada, jika ada
     const imageContainer = document.querySelector(".image-inputs");
     if (
-      Array.isArray(data.boardingHouse.images) &&
-      data.boardingHouse.images.length > 0
+      Array.isArray(roomData.images) &&
+      roomData.images.length > 0
     ) {
-      data.boardingHouse.images.forEach((image, index) => {
+      roomData.images.forEach((image, index) => {
         const imageElement = document.createElement("img");
         imageElement.src = image;
         imageElement.alt = `Gambar ${index + 1}`;
