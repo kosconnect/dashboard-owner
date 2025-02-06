@@ -159,8 +159,9 @@ async function fetchBoardingHouseName() {
     );
     if (!response.ok) throw new Error("Gagal mengambil nama kos");
     const data = await response.json();
-    document.getElementById("boardingHouseName").textContent =
-      data.boarding_house_name;
+    document.getElementById(
+      "header"
+    ).innerHTML = `<h2>Form Tambah Kamar Kos - ${data.boarding_house_name}</h2>`;
   } catch (error) {
     console.error("Error:", error);
   }
