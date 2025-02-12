@@ -75,7 +75,7 @@ function loadSidebar() {
                 <h2>KosConnect</h2>
             </div>
             <ul>
-                <li><a href="index.html"><i class="fas fa-tachometer-alt"></i> <span>Beranda</span></a></li>
+                <li><a href="index.html"><i class="fas fa-tachometer-alt"></i> <span>Dasbor</span></a></li>
                 <li>
                     <h2 style="font-size: 14px; color: #b0bec5;">Manajemen Data Kos</h2>
                     <ul style="list-style: none; padding-left: 20px; margin: 10px 0;">
