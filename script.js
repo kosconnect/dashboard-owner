@@ -76,6 +76,7 @@ function loadSidebar() {
             </div>
             <ul>
                 <li><a href="index.html"><i class="fas fa-tachometer-alt"></i> <span>Dasbor</span></a></li>
+                <li><a href="transaksi.html"><i class="fas fa-wallet"></i> <span>Manajemen Transaksi</span></a></li>
                 <li>
                     <h2 style="font-size: 14px; color: #b0bec5;">Manajemen Data Kos</h2>
                     <ul style="list-style: none; padding-left: 20px; margin: 10px 0;">
@@ -85,7 +86,6 @@ function loadSidebar() {
                             </a>
                         </li>
                         <li><a href="custom_facility.html"><i class="fas fa-bed"></i> <span>Manajemen Fasilitas Custom Facility</span></a></li>
-                        <li><a href="transaksi.html"><i class="fas fa-wallet"></i> <span>Manajemen Transaksi</span></a></li>
                     </ul>
                 </li>
             </ul>
