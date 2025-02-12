@@ -95,7 +95,7 @@ function loadSidebar() {
 }
 
 function loadHeader() {
-  let pageTitle = "Dashboard Pemilik Kos"; // Default title
+  let pageTitle = "Dasbor Pemilik Kos"; // Default title
 
   // Ambil nama halaman dari URL atau title dokumen
   const path = window.location.pathname;
