@@ -85,7 +85,7 @@ function loadSidebar() {
                                 <i class="fas fa-house-user"></i> <span>Manajemen Kos</span>
                             </a>
                         </li>
-                        <li><a href="custom_facility.html"><i class="fas fa-bed"></i> <span>Manajemen Fasilitas Custom Facility</span></a></li>
+                        <li><a href="custom_facility.html"><i class="fas fa-bed"></i> <span>Manajemen Fasilitas Custom</span></a></li>
                     </ul>
                 </li>
             </ul>
